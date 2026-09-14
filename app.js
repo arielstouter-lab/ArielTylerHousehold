@@ -120,6 +120,7 @@ window.location.href = "app.html";
     errorElement.hidden = false;
   }
 }
+}
 
 
 /* -----------------------------
