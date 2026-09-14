@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function setupLogin() {
   const form = document.getElementById("login-form");
-  const emailInput = document.getElementById("email");
+  const usernameInput = document.getElementById("username");
   const passwordInput = document.getElementById("password");
   const togglePassword = document.getElementById("toggle-password");
   const errorElement = document.getElementById("login-error");
@@ -66,9 +66,9 @@ function setupLogin() {
     errorElement.hidden = true;
     errorElement.textContent = "";
 
-    const email = emailInput.value.trim();
+    const username = usernameInput.value.trim();
     const password = passwordInput.value;
-
+    
     if (!email || !password) {
       showLoginError("Please enter your email and password.");
       return;
@@ -78,21 +78,42 @@ function setupLogin() {
     buttonText.textContent = "Signing in...";
     spinner.hidden = false;
 
-    const { error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password
-    });
+// Look up the email associated with the username
+const {
+  data: email,
+  error: lookupError
+} = await supabaseClient.rpc("get_email_for_username", {
+  input_username: username
+});
 
-    if (error) {
-      showLoginError(getFriendlyAuthError(error));
-      button.disabled = false;
-      buttonText.textContent = "Sign in";
-      spinner.hidden = true;
-      return;
-    }
+if (lookupError || !email) {
+  showLoginError("Invalid username or password.");
 
-    window.location.href = "app.html";
+  button.disabled = false;
+  buttonText.textContent = "Sign in";
+  spinner.hidden = true;
+
+  return;
+}
+
+// Authenticate through Supabase Auth
+const { error: loginError } =
+  await supabaseClient.auth.signInWithPassword({
+    email,
+    password
   });
+
+if (loginError) {
+  showLoginError("Invalid username or password.");
+
+  button.disabled = false;
+  buttonText.textContent = "Sign in";
+  spinner.hidden = true;
+
+  return;
+}
+
+window.location.href = "app.html";
 
   function showLoginError(message) {
     errorElement.textContent = message;
