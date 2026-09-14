@@ -1,0 +1,686 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#EFEBDD;
+    --card:#FBF8EF;
+    --ink:#24261F;
+    --ink-soft:#5B5B4E;
+    --green:#37533F;
+    --green-soft:#5C7A67;
+    --ochre:#B8862E;
+    --brick:#A6432F;
+    --line:#C9C2A8;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:transparent;}
+  #cl-root{
+    font-family:'Inter',system-ui,sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    padding:28px 20px 60px;
+    min-height:100%;
+    line-height:1.4;
+  }
+  .cl-wrap{max-width:980px;margin:0 auto;}
+
+  .cl-header{margin-bottom:22px;}
+  .cl-title{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:34px;
+    letter-spacing:-0.01em;
+    margin:0 0 4px;
+    color:var(--green);
+  }
+  .cl-tagline{margin:0;color:var(--ink-soft);font-size:14.5px;}
+
+  .cl-beam{
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:16px 18px 14px;
+    margin:18px 0 26px;
+  }
+  .cl-beam-label{font-size:12.5px;color:var(--ink-soft);margin:0 0 12px;}
+  .cl-beam-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .cl-beam-row:last-child{margin-bottom:0;}
+  .cl-beam-name{
+    width:110px;flex:0 0 auto;font-size:14px;font-weight:600;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .cl-beam-track{
+    position:relative;flex:1;height:20px;
+    background:repeating-linear-gradient(90deg,var(--line) 0 1px, transparent 1px 40px);
+    border-bottom:1px solid var(--line);
+  }
+  .cl-beam-fill{
+    position:absolute;left:0;top:2px;bottom:2px;
+    background:var(--green-soft);
+    transition:width .35s ease, background .35s ease;
+  }
+  .cl-beam-fill.over{background:var(--brick);}
+  .cl-beam-target{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ochre);}
+  .cl-beam-pts{
+    width:64px;flex:0 0 auto;text-align:right;
+    font-variant-numeric:tabular-nums;font-weight:600;color:var(--green);font-size:14px;
+  }
+
+  .cl-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:22px;}
+  @media (max-width:780px){.cl-grid{grid-template-columns:1fr;}}
+
+  .cl-panel{background:var(--card);border:1px solid var(--line);}
+  .cl-panel-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    padding:14px 16px 10px;border-bottom:1px solid var(--line);
+    gap:10px;
+  }
+  .cl-panel-title{font-family:'Fraunces',serif;font-weight:600;font-size:18px;margin:0;}
+  .cl-panel-sub{font-size:11.5px;color:var(--ink-soft);text-align:right;line-height:1.4;}
+
+  /* chore cards */
+  .cl-chore-list{padding:10px 16px 6px;}
+  .cl-chore-card{border-bottom:1px solid var(--line);padding:12px 0;}
+  .cl-chore-card:last-child{border-bottom:none;}
+  .cl-chore-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .cl-chore-top input[type=text]{
+    flex:1;border:none;background:transparent;font-size:14.5px;font-weight:600;color:var(--ink);
+    font-family:'Inter',sans-serif;padding:3px 2px;border-bottom:1px dashed transparent;
+  }
+  .cl-chore-top input[type=text]:focus{outline:none;border-bottom:1px dashed var(--green);}
+  .cl-del{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:15px;padding:2px;line-height:1;}
+  .cl-del:hover{color:var(--brick);}
+
+  .cl-chore-fields{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:9px;font-size:12px;color:var(--ink-soft);}
+  .cl-field{display:flex;align-items:center;gap:5px;}
+  .cl-field input[type=number]{
+    width:52px;border:1px solid var(--line);background:var(--paper);
+    font-variant-numeric:tabular-nums;font-family:'Inter',sans-serif;font-size:13px;
+    padding:3px 5px;color:var(--ink);
+  }
+  .cl-field input[type=number]:focus{outline:none;border-color:var(--green);}
+  .cl-pts-badge{
+    margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;color:var(--ochre);font-size:13.5px;
+    text-align:right;
+  }
+  .cl-pts-badge small{display:block;font-weight:500;color:var(--ink-soft);font-size:10px;}
+
+  .cl-subrow-label{font-size:10.5px;color:var(--ink-soft);margin:6px 0 4px;text-transform:none;}
+
+  .cl-split-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .cl-split-chip{
+    display:flex;align-items:center;gap:4px;background:var(--paper);
+    border:1px solid var(--line);padding:3px 6px;font-size:12px;
+  }
+  .cl-split-chip input[type=number]{
+    width:38px;border:none;background:transparent;text-align:right;
+    font-variant-numeric:tabular-nums;font-family:'Inter',sans-serif;font-size:12px;color:var(--ink);
+  }
+  .cl-split-chip input[type=number]:focus{outline:none;}
+  .cl-split-total{font-size:11px;color:var(--ink-soft);margin-left:2px;}
+  .cl-split-total.bad{color:var(--brick);font-weight:600;}
+  .cl-split-total.good{color:var(--green);font-weight:600;}
+
+  .cl-dislike-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;}
+  .cl-dislike-chip{
+    display:flex;align-items:center;gap:4px;background:var(--paper);
+    border:1px solid var(--brick);border-style:dashed;padding:3px 6px;font-size:12px;
+  }
+  .cl-dislike-chip input[type=number]{
+    width:34px;border:none;background:transparent;text-align:right;
+    font-variant-numeric:tabular-nums;font-family:'Inter',sans-serif;font-size:12px;color:var(--ink);
+  }
+  .cl-dislike-chip input[type=number]:focus{outline:none;}
+
+  .cl-add-row{display:flex;gap:8px;margin-top:10px;padding:0 16px 16px;}
+  .cl-add-row input{
+    flex:1;padding:7px 9px;border:1px solid var(--line);background:var(--paper);
+    font-family:'Inter',sans-serif;font-size:13.5px;color:var(--ink);
+  }
+  .cl-add-row input:focus{outline:none;border-color:var(--green);}
+
+  .cl-btn{
+    font-family:'Inter',sans-serif;font-weight:600;font-size:13px;
+    padding:8px 14px;border:1px solid var(--green);background:var(--green);
+    color:var(--paper);cursor:pointer;
+  }
+  .cl-btn:hover{background:var(--green-soft);border-color:var(--green-soft);}
+  .cl-btn.ghost{background:transparent;color:var(--green);}
+  .cl-btn.ghost:hover{background:var(--green);color:var(--paper);}
+  .cl-btn.small{padding:5px 10px;font-size:12px;}
+
+  .cl-panel-actions{display:flex;gap:8px;padding:12px 16px 16px;border-top:1px solid var(--line);flex-wrap:wrap;}
+
+  /* people column */
+  .cl-people{padding:6px 16px 16px;}
+  .cl-person{margin-bottom:18px;}
+  .cl-person:last-child{margin-bottom:0;}
+  .cl-person-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .cl-person-name{
+    font-weight:700;font-size:15px;border:none;background:transparent;
+    font-family:'Fraunces',serif;color:var(--green);width:60%;
+    border-bottom:1px dashed transparent;padding:2px 0;
+  }
+  .cl-person-name:focus{outline:none;border-bottom:1px dashed var(--green);}
+  .cl-person-total{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ochre);font-size:14px;}
+  .cl-person-remove{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:12px;margin-left:6px;text-decoration:underline;padding:0;}
+  .cl-ticket{
+    background:var(--paper);border:1px solid var(--line);
+    padding:7px 10px;margin-bottom:6px;
+    display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;
+  }
+  .cl-ticket-name{flex:1;}
+  .cl-ticket-share{color:var(--ink-soft);font-size:11.5px;font-variant-numeric:tabular-nums;}
+  .cl-ticket-pts{font-variant-numeric:tabular-nums;color:var(--ochre);font-weight:600;font-size:12.5px;}
+  .cl-empty{color:var(--ink-soft);font-size:12.5px;font-style:italic;padding:4px 0;}
+
+  .cl-add-person{display:flex;gap:8px;flex:1;}
+  .cl-add-person input{
+    flex:1;padding:7px 9px;border:1px solid var(--line);background:var(--paper);
+    font-family:'Inter',sans-serif;font-size:13.5px;
+  }
+  .cl-add-person input:focus{outline:none;border-color:var(--green);}
+
+  .cl-note{font-size:11.5px;color:var(--ink-soft);margin-top:16px;line-height:1.5;}
+  .cl-status{font-size:11.5px;color:var(--ink-soft);margin-bottom:10px;min-height:14px;}
+</style>
+
+<div id="cl-root">
+  <div class="cl-wrap">
+    <div class="cl-header">
+      <h1 class="cl-title">The Chore Ledger</h1>
+      <p class="cl-tagline">Each person rates their own dislike of a chore — so the same chore is worth more points to whoever minds it more.</p>
+    </div>
+
+    <div class="cl-status" id="cl-status"></div>
+
+    <div class="cl-beam" id="cl-beam"></div>
+
+    <div class="cl-grid">
+      <div class="cl-panel">
+        <div class="cl-panel-head">
+          <h2 class="cl-panel-title">Chores</h2>
+          <span class="cl-panel-sub">pts = ×/week &times; min &times; <em>their</em> dislike(1&ndash;10) &times; their share%</span>
+        </div>
+        <div class="cl-chore-list" id="cl-chore-list"></div>
+        <div class="cl-add-row">
+          <input type="text" id="cl-new-chore-name" placeholder="New chore, e.g. Vacuum living room" />
+          <button class="cl-btn small" id="cl-add-chore">Add</button>
+        </div>
+        <div class="cl-panel-actions">
+          <button class="cl-btn" id="cl-auto-balance">Auto-balance</button>
+          <button class="cl-btn ghost small" id="cl-clear-assign">Reset all to unsplit</button>
+        </div>
+      </div>
+
+      <div class="cl-panel">
+        <div class="cl-panel-head">
+          <h2 class="cl-panel-title">People</h2>
+          <span class="cl-panel-sub" id="cl-target-label"></span>
+        </div>
+        <div class="cl-people" id="cl-people-list"></div>
+        <div class="cl-panel-actions">
+          <div class="cl-add-person">
+            <input type="text" id="cl-new-person-name" placeholder="Add a person" />
+            <button class="cl-btn small" id="cl-add-person">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="cl-note">Saved to this app's shared storage, so it stays put across visits and anyone with the link sees the same ledger — handy for a household, but don't put anything private in a chore name.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'chore-ledger-state-v1';
+  const DEFAULT_DISLIKE = 5;
+
+  function freshDefault(){
+    return {
+      people: [
+        {id: 'p1', name: 'Alex'},
+        {id: 'p2', name: 'Sam'}
+      ],
+      chores: [
+        {id: 'c1', name: 'Wash dishes', timesPerWeek: 7, minutes: 15, dislike: {p1: 3, p2: 4}},
+        {id: 'c2', name: 'Clean bathroom', timesPerWeek: 1, minutes: 30, dislike: {p1: 9, p2: 6}},
+        {id: 'c3', name: 'Take out trash', timesPerWeek: 2, minutes: 5, dislike: {p1: 2, p2: 2}},
+        {id: 'c4', name: 'Vacuum', timesPerWeek: 1, minutes: 20, dislike: {p1: 4, p2: 5}},
+        {id: 'c5', name: 'Laundry', timesPerWeek: 2, minutes: 40, dislike: {p1: 5, p2: 3}}
+      ],
+      assignments: {
+        c1: {p1: 100}, c2: {p2: 100}, c3: {p1: 100}, c4: {p2: 100}, c5: {p1: 100}
+      }
+    };
+  }
+
+  let state = null;
+  let saveTimer = null;
+
+  function uid(prefix){ return prefix + Math.random().toString(36).slice(2,9); }
+
+  function dislikeOf(chore, personId){
+    const d = chore.dislike && chore.dislike[personId];
+    return typeof d === 'number' ? d : DEFAULT_DISLIKE;
+  }
+
+  function costFor(chore, personId){
+    // full weekly point cost if this person did 100% of the chore
+    return chore.timesPerWeek * chore.minutes * dislikeOf(chore, personId);
+  }
+
+  function shareOf(chore, personId){
+    const pct = (state.assignments[chore.id] && state.assignments[chore.id][personId]) || 0;
+    return Math.round(costFor(chore, personId) * pct / 100);
+  }
+
+  function choreTotalAtCurrentSplit(chore){
+    return state.people.reduce((sum,p) => sum + shareOf(chore, p.id), 0);
+  }
+
+  function splitTotal(choreId){
+    const a = state.assignments[choreId] || {};
+    return Object.values(a).reduce((s,v)=>s+(v||0),0);
+  }
+
+  function setStatus(msg){
+    const el = document.getElementById('cl-status');
+    el.textContent = msg || '';
+    if(msg) setTimeout(()=>{ if(el.textContent===msg) el.textContent=''; }, 2200);
+  }
+
+  function migrate(raw){
+    if(!raw || !Array.isArray(raw.people) || !Array.isArray(raw.chores)) return freshDefault();
+    raw.chores.forEach(c => {
+      if(typeof c.timesPerWeek !== 'number') c.timesPerWeek = 1;
+      if(typeof c.minutes !== 'number') c.minutes = 15;
+      // old single-number dislike -> per-person object
+      if(typeof c.dislike === 'number'){
+        const flat = Math.min(10, Math.max(1, c.dislike));
+        const obj = {};
+        raw.people.forEach(p => obj[p.id] = flat);
+        c.dislike = obj;
+      }
+      if(!c.dislike || typeof c.dislike !== 'object') c.dislike = {};
+      raw.people.forEach(p => {
+        if(typeof c.dislike[p.id] !== 'number') c.dislike[p.id] = DEFAULT_DISLIKE;
+        c.dislike[p.id] = Math.min(10, Math.max(1, c.dislike[p.id]));
+      });
+    });
+    raw.assignments = raw.assignments || {};
+    Object.keys(raw.assignments).forEach(cid => {
+      const val = raw.assignments[cid];
+      if(typeof val === 'string') raw.assignments[cid] = {[val]: 100};
+    });
+    return raw;
+  }
+
+  async function load(){
+    try{
+      const res = await window.storage.get(STORAGE_KEY, true);
+      state = res && res.value ? migrate(JSON.parse(res.value)) : freshDefault();
+    } catch(e){
+      state = freshDefault();
+    }
+    render();
+  }
+
+  function scheduleSave(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(async ()=>{
+      try{
+        const result = await window.storage.set(STORAGE_KEY, JSON.stringify(state), true);
+        if(!result) setStatus('Could not save — changes may not persist.');
+      } catch(e){
+        setStatus('Could not save — changes may not persist.');
+      }
+    }, 250);
+  }
+
+  function totalsByPerson(){
+    const totals = {};
+    state.people.forEach(p => totals[p.id] = 0);
+    state.chores.forEach(c => {
+      state.people.forEach(p => { totals[p.id] += shareOf(c, p.id); });
+    });
+    return totals;
+  }
+
+  function autoBalance(){
+    if(state.people.length === 0) return;
+    const totals = {};
+    state.people.forEach(p => totals[p.id] = 0);
+    const newAssign = {};
+
+    // pass 1: whole chores first. Order by the chore's most expensive possible
+    // assignment (its worst-case cost), so the highest-stakes chores get placed
+    // first. Each goes to whoever keeps the running totals most even, own dislike included.
+    const sorted = [...state.chores].sort((a,b) => {
+      const worstA = Math.max(...state.people.map(p => costFor(a, p.id)), 0);
+      const worstB = Math.max(...state.people.map(p => costFor(b, p.id)), 0);
+      return worstB - worstA;
+    });
+    sorted.forEach(chore => {
+      let best = state.people[0].id;
+      state.people.forEach(p => {
+        if(totals[p.id] + costFor(chore, p.id) < totals[best] + costFor(chore, best)) best = p.id;
+      });
+      newAssign[chore.id] = {[best]: 100};
+      totals[best] += costFor(chore, best);
+    });
+
+    // pass 2: refine by splitting one chore between the most- and least-loaded
+    // person, weighting the transfer by each person's own dislike rate.
+    let guard = 0;
+    while(guard++ < 200){
+      let maxP = state.people[0].id, minP = state.people[0].id;
+      state.people.forEach(p => {
+        if(totals[p.id] > totals[maxP]) maxP = p.id;
+        if(totals[p.id] < totals[minP]) minP = p.id;
+      });
+      const diff = totals[maxP] - totals[minP];
+      if(diff <= 1 || maxP === minP) break;
+
+      const candidates = state.chores
+        .filter(c => newAssign[c.id] && newAssign[c.id][maxP] === 100)
+        .sort((a,b) => costFor(a, maxP) - costFor(b, maxP));
+      if(candidates.length === 0) break;
+      const chore = candidates[0];
+      const unitMax = costFor(chore, maxP) / 100;
+      const unitMin = costFor(chore, minP) / 100;
+      if(unitMax + unitMin <= 0) break;
+
+      const y = diff / (unitMax + unitMin); // percentage points to move to minP
+      if(y >= 100){
+        newAssign[chore.id] = {[minP]: 100};
+        totals[maxP] -= costFor(chore, maxP);
+        totals[minP] += costFor(chore, minP);
+      } else {
+        const pctToMin = Math.max(0, Math.min(100, Math.round(y)));
+        const pctToMax = 100 - pctToMin;
+        newAssign[chore.id] = {[minP]: pctToMin, [maxP]: pctToMax};
+        totals[maxP] -= Math.round(costFor(chore, maxP) * pctToMin / 100);
+        totals[minP] += Math.round(costFor(chore, minP) * pctToMin / 100);
+        break;
+      }
+    }
+
+    state.assignments = newAssign;
+    render();
+    scheduleSave();
+  }
+
+  function render(){
+    renderBeam();
+    renderChores();
+    renderPeople();
+  }
+
+  function renderBeam(){
+    const beam = document.getElementById('cl-beam');
+    const totals = totalsByPerson();
+    const values = Object.values(totals);
+    const max = Math.max(1, ...values);
+    const mean = values.length ? values.reduce((a,b)=>a+b,0) / values.length : 0;
+
+    if(state.people.length === 0){
+      beam.innerHTML = '<p class="cl-beam-label">Add people to see the balance.</p>';
+      document.getElementById('cl-target-label').textContent = '';
+      return;
+    }
+    document.getElementById('cl-target-label').textContent = 'target ≈ ' + Math.round(mean) + ' pts/wk each';
+
+    let html = '<p class="cl-beam-label">Weekly points per person — gold line marks the even split.</p>';
+    state.people.forEach(p => {
+      const t = totals[p.id] || 0;
+      const widthPct = max > 0 ? (t / max) * 100 : 0;
+      const targetPct = max > 0 ? (mean / max) * 100 : 0;
+      const over = mean > 0 && t > mean * 1.15;
+      html += `
+        <div class="cl-beam-row">
+          <div class="cl-beam-name">${escapeHtml(p.name)}</div>
+          <div class="cl-beam-track">
+            <div class="cl-beam-fill ${over ? 'over' : ''}" style="width:${widthPct}%;"></div>
+            <div class="cl-beam-target" style="left:${targetPct}%;"></div>
+          </div>
+          <div class="cl-beam-pts">${t}</div>
+        </div>`;
+    });
+    beam.innerHTML = html;
+  }
+
+  function renderChores(){
+    const list = document.getElementById('cl-chore-list');
+    if(state.chores.length === 0){
+      list.innerHTML = '<p class="cl-empty">No chores yet — add one below.</p>';
+      return;
+    }
+    list.innerHTML = state.chores.map(c => {
+      const total = splitTotal(c.id);
+      const totalClass = total === 100 ? 'good' : (total === 0 ? '' : 'bad');
+
+      const dislikeChips = state.people.map(p => `
+        <div class="cl-dislike-chip" title="${escapeAttr(p.name)}'s dislike of this chore">
+          <span>${escapeHtml(p.name)}</span>
+          <input type="number" min="1" max="10" value="${dislikeOf(c, p.id)}" data-dislike-chore="${c.id}" data-dislike-person="${p.id}" />
+        </div>`).join('');
+
+      const splitChips = state.people.map(p => {
+        const pct = (state.assignments[c.id] && state.assignments[c.id][p.id]) || 0;
+        return `
+          <div class="cl-split-chip">
+            <span>${escapeHtml(p.name)}</span>
+            <input type="number" min="0" max="100" value="${pct}" data-split-chore="${c.id}" data-split-person="${p.id}" />
+            <span>%</span>
+          </div>`;
+      }).join('');
+
+      return `
+        <div class="cl-chore-card" data-row="${c.id}">
+          <div class="cl-chore-top">
+            <input type="text" value="${escapeAttr(c.name)}" data-field="name" data-chore="${c.id}" />
+            <button class="cl-del" data-del-chore="${c.id}" title="Remove chore">✕</button>
+          </div>
+          <div class="cl-chore-fields">
+            <label class="cl-field">×/week <input type="number" min="0" step="1" value="${c.timesPerWeek}" data-field="timesPerWeek" data-chore="${c.id}" /></label>
+            <label class="cl-field">min <input type="number" min="0" step="1" value="${c.minutes}" data-field="minutes" data-chore="${c.id}" /></label>
+            <span class="cl-pts-badge" data-pts-badge="${c.id}">${choreTotalAtCurrentSplit(c)} pts/wk<small>at current split</small></span>
+          </div>
+          <div class="cl-subrow-label">dislike (1&ndash;10), per person</div>
+          <div class="cl-dislike-row">${dislikeChips}</div>
+          <div class="cl-subrow-label">share of the chore</div>
+          <div class="cl-split-row">
+            ${splitChips}
+            <span class="cl-split-total ${totalClass}" data-split-total="${c.id}">${total}%</span>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderPeople(){
+    const wrap = document.getElementById('cl-people-list');
+    const totals = totalsByPerson();
+    if(state.people.length === 0){
+      wrap.innerHTML = '<p class="cl-empty">No one on the ledger yet — add someone below.</p>';
+      return;
+    }
+    wrap.innerHTML = state.people.map(p => {
+      const mine = state.chores.filter(c => ((state.assignments[c.id]||{})[p.id]||0) > 0);
+      const ticketsHtml = mine.length
+        ? mine.map(c => {
+            const pct = (state.assignments[c.id]||{})[p.id] || 0;
+            return `
+              <div class="cl-ticket">
+                <span class="cl-ticket-name">${escapeHtml(c.name)}</span>
+                <span class="cl-ticket-share">${pct}% · dislike ${dislikeOf(c,p.id)}</span>
+                <span class="cl-ticket-pts">${shareOf(c, p.id)}</span>
+              </div>`;
+          }).join('')
+        : '<p class="cl-empty">No chores assigned yet.</p>';
+
+      return `
+        <div class="cl-person">
+          <div class="cl-person-head">
+            <div>
+              <input class="cl-person-name" data-person-name="${p.id}" value="${escapeAttr(p.name)}" />
+              <button class="cl-person-remove" data-del-person="${p.id}">remove</button>
+            </div>
+            <div class="cl-person-total">${totals[p.id]||0} pts/wk</div>
+          </div>
+          ${ticketsHtml}
+        </div>`;
+    }).join('');
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+  function escapeAttr(s){ return escapeHtml(s); }
+
+  function refreshChoreBadge(choreId){
+    const chore = state.chores.find(c => c.id === choreId);
+    if(!chore) return;
+    const badge = document.querySelector(`[data-pts-badge="${choreId}"]`);
+    if(badge) badge.innerHTML = choreTotalAtCurrentSplit(chore) + ' pts/wk<small>at current split</small>';
+    const totalEl = document.querySelector(`[data-split-total="${choreId}"]`);
+    if(totalEl){
+      const total = splitTotal(choreId);
+      totalEl.textContent = total + '%';
+      totalEl.className = 'cl-split-total ' + (total === 100 ? 'good' : (total === 0 ? '' : 'bad'));
+    }
+  }
+  function refreshPeopleTotalsAndTickets(){
+    renderPeople();
+    renderBeam();
+  }
+
+  document.addEventListener('input', (e) => {
+    const t = e.target;
+
+    if(t.matches('input[data-field][data-chore]')){
+      const chore = state.chores.find(c => c.id === t.dataset.chore);
+      if(!chore) return;
+      if(t.dataset.field === 'name') chore.name = t.value;
+      if(t.dataset.field === 'timesPerWeek') chore.timesPerWeek = Math.max(0, parseFloat(t.value) || 0);
+      if(t.dataset.field === 'minutes') chore.minutes = Math.max(0, parseFloat(t.value) || 0);
+      refreshChoreBadge(chore.id);
+      refreshPeopleTotalsAndTickets();
+      scheduleSave();
+    }
+
+    if(t.matches('input[data-dislike-chore][data-dislike-person]')){
+      const choreId = t.dataset.dislikeChore;
+      const personId = t.dataset.dislikePerson;
+      const chore = state.chores.find(c => c.id === choreId);
+      if(!chore) return;
+      const val = Math.min(10, Math.max(1, parseInt(t.value,10) || 1));
+      chore.dislike = chore.dislike || {};
+      chore.dislike[personId] = val;
+      refreshChoreBadge(choreId);
+      refreshPeopleTotalsAndTickets();
+      scheduleSave();
+    }
+
+    if(t.matches('input[data-split-chore][data-split-person]')){
+      const choreId = t.dataset.splitChore;
+      const personId = t.dataset.splitPerson;
+      const pct = Math.min(100, Math.max(0, parseInt(t.value,10) || 0));
+      state.assignments[choreId] = state.assignments[choreId] || {};
+      state.assignments[choreId][personId] = pct;
+      refreshChoreBadge(choreId);
+      refreshPeopleTotalsAndTickets();
+      scheduleSave();
+    }
+
+    if(t.matches('input[data-person-name]')){
+      const p = state.people.find(p => p.id === t.dataset.personName);
+      if(!p) return;
+      p.name = t.value;
+      renderBeam();
+      renderChores();
+      renderPeople();
+      scheduleSave();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    const t = e.target;
+
+    if(t.matches('[data-del-chore]')){
+      const id = t.getAttribute('data-del-chore');
+      state.chores = state.chores.filter(c => c.id !== id);
+      delete state.assignments[id];
+      render();
+      scheduleSave();
+    }
+
+    if(t.matches('[data-del-person]')){
+      if(state.people.length <= 1){ setStatus('Keep at least one person.'); return; }
+      const id = t.getAttribute('data-del-person');
+      state.people = state.people.filter(p => p.id !== id);
+      state.chores.forEach(c => { if(c.dislike) delete c.dislike[id]; });
+      Object.keys(state.assignments).forEach(cid => {
+        if(state.assignments[cid]) delete state.assignments[cid][id];
+      });
+      render();
+      scheduleSave();
+    }
+
+    if(t.id === 'cl-add-chore'){
+      const input = document.getElementById('cl-new-chore-name');
+      const name = input.value.trim();
+      if(!name) return;
+      const id = uid('c');
+      const dislike = {};
+      state.people.forEach(p => dislike[p.id] = DEFAULT_DISLIKE);
+      state.chores.push({id, name, timesPerWeek: 1, minutes: 15, dislike});
+      const firstPerson = state.people[0];
+      state.assignments[id] = firstPerson ? {[firstPerson.id]: 100} : {};
+      input.value = '';
+      render();
+      scheduleSave();
+    }
+
+    if(t.id === 'cl-add-person'){
+      const input = document.getElementById('cl-new-person-name');
+      const name = input.value.trim();
+      if(!name) return;
+      const id = uid('p');
+      state.people.push({id, name});
+      state.chores.forEach(c => {
+        c.dislike = c.dislike || {};
+        c.dislike[id] = DEFAULT_DISLIKE;
+      });
+      input.value = '';
+      render();
+      scheduleSave();
+    }
+
+    if(t.id === 'cl-auto-balance'){
+      autoBalance();
+      setStatus('Balanced.');
+    }
+
+    if(t.id === 'cl-clear-assign'){
+      const first = state.people[0];
+      state.chores.forEach(c => {
+        state.assignments[c.id] = first ? {[first.id]: 100} : {};
+      });
+      render();
+      scheduleSave();
+      setStatus('Reset — everything assigned 100% to the first person.');
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){
+      if(e.target.id === 'cl-new-chore-name') document.getElementById('cl-add-chore').click();
+      if(e.target.id === 'cl-new-person-name') document.getElementById('cl-add-person').click();
+    }
+  });
+
+  load();
+})();
+</script>
