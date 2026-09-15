@@ -537,8 +537,11 @@ input {
   color: var(--ink-soft);
 }
 
-.chip input[type=number],
-.cl-field input[type=number],
+.chip input[type=number] {
+  width: auto;
+  min-width: 2.5ch;
+  field-sizing: content;
+}.cl-field input[type=number],
 .cl-split-chip input[type=number],
 .cl-dislike-chip input[type=number] {
   width: auto;
