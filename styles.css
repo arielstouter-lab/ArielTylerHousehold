@@ -96,13 +96,16 @@ input {
   width: 34px;
   height: 34px;
   border-radius: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--primary);
-  color: white;
-  font-size: 15px;
-  font-weight: 700;
+  display: block;
+  background-image: url('pinecone.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.sidebar-brand .brand-mark {
+  width: 32px;
+  height: 32px;
 }
 
 .auth-header {
@@ -367,8 +370,8 @@ input {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #374151;
-  color: white;
+  background: var(--green-soft);
+  color: var(--sidebar-text);
   font-size: 13px;
   font-weight: 700;
 }
@@ -390,13 +393,13 @@ input {
 .logout-button {
   border: 0;
   background: transparent;
-  color: #9ca3af;
+  color: var(--green-soft);
   cursor: pointer;
   font-size: 18px;
 }
 
 .logout-button:hover {
-  color: white;
+  color: var(--paper);
 }
 
 .main-content {
