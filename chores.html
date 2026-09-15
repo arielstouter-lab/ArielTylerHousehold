@@ -725,6 +725,6 @@
       }
     });
 
-    load();
+    document.addEventListener('app:ready', load, { once: true });
   })();
 </script>

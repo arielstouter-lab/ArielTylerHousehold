@@ -159,6 +159,7 @@ function setupApp(session) {
       window.location.href = "index.html";
     }
   });
+  document.dispatchEvent(new CustomEvent('app:ready', { detail: { session } }));
 }
 
 
