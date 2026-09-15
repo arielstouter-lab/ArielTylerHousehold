@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 /* -----------------------------
    Login
 ----------------------------- */
-
 function setupLogin() {
   const form = document.getElementById("login-form");
   const usernameInput = document.getElementById("username");
@@ -69,7 +68,7 @@ function setupLogin() {
     const username = usernameInput.value.trim();
     const password = passwordInput.value;
 
-    if (!email || !password) {
+    if (!username || !password) {
       showLoginError("Please enter your email and password.");
       return;
     }
