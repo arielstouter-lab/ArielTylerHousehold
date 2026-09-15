@@ -11,34 +11,38 @@
     html, body {
         margin: 0;
         min-height: 100vh;
+        background-color: var(--line); /* Fallback color while images load */
+    }
+
+    body {
+        --season-img: none;
+    }
+
+    /* Image layer, faded via ::before so opacity (not background-image) does the animating */
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: var(--season-img);
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
-        background-color: var(--line); /* Fallback color while images load */
-        transition: background-image 0.5s ease-in-out;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        z-index: -1;
+        pointer-events: none;
     }
 
-    /* Season-specific backgrounds */
-    body[data-season="spring"] {
-        background-color: var(--green-soft);
-        background-image: url('spring.jpg');
+    body.img-loaded::before {
+        opacity: 1;
     }
 
-    body[data-season="summer"] {
-        background-color: var(--ochre);
-        background-image: url('summer.jpg');
-    }
-
-    body[data-season="fall"] {
-        background-color: var(--danger);
-        background-image: url('fall.jpg');
-    }
-
-    body[data-season="winter"] {
-        background-color: var(--ink);
-        background-image: url('winter.jpg');
-    }
+    /* Season-specific colors (instant base tone) */
+    body[data-season="spring"] { background-color: var(--green-soft); }
+    body[data-season="summer"] { background-color: var(--ochre); }
+    body[data-season="fall"]   { background-color: var(--danger); }
+    body[data-season="winter"] { background-color: var(--ink); }
 
     .cal-back {
         display: inline-flex;
@@ -182,8 +186,35 @@
             return 'winter';
         }
 
+        const seasonImages = {
+            spring: 'spring.jpg',
+            summer: 'summer.jpg',
+            fall: 'fall.jpg',
+            winter: 'winter.jpg'
+        };
+
+        let currentSeason = null;
+        let loadToken = 0;
+
         function updateSeason(date){
-            document.body.dataset.season = getSeason(date);
+            const season = getSeason(date);
+            if (season === currentSeason) return;
+            currentSeason = season;
+
+            document.body.dataset.season = season;
+
+            const myToken = ++loadToken;
+            document.body.classList.remove('img-loaded');
+
+            const img = new Image();
+            img.onload = () => {
+                if (myToken !== loadToken) return;
+                document.body.style.setProperty('--season-img', `url(${seasonImages[season]})`);
+                // force reflow so the opacity transition reliably triggers after the image swap
+                void document.body.offsetHeight;
+                document.body.classList.add('img-loaded');
+            };
+            img.src = seasonImages[season];
         }
 
         // Today's actual season, day-accurate
