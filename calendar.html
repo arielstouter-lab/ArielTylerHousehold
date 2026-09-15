@@ -206,17 +206,25 @@
             document.body.dataset.season = season;
 
             const myToken = ++loadToken;
-            document.body.classList.remove('img-loaded');
+            const el = document.body;
 
-            const img = new Image();
-            img.onload = () => {
-                if (myToken !== loadToken) return;
-                document.body.style.setProperty('--season-img', `url(${seasonImages[season]})`);
-                // force reflow so the opacity transition reliably triggers after the image swap
-                void document.body.offsetHeight;
-                document.body.classList.add('img-loaded');
-            };
-            img.src = seasonImages[season];
+            const swapImage = () => {
+                const img = new Image();
+                img.onload = () => {
+                    if (myToken !== loadToken) return;
+                    el.style.setProperty('--season-img', `url(${seasonImages[season]})`)
+                    void el.offsetHeight;
+                    el.classList.add('img-loaded');
+                };
+                img.src = seasonImages[season];
+            }
+
+            if (el.classList.contains('img-loaded')) {
+                el.addEventListener('transitionend', swapImage, { once: true });
+                el.classList.remove('img-loaded');
+            } else {
+                swapImage();
+            }
         }
 
         // Today's actual season, day-accurate
