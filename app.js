@@ -12,26 +12,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     data: { session }
   } = await supabaseClient.auth.getSession();
 
-  // Login page
-  if (currentPage === "index.html" || currentPage === "") {
+//Set public pages
+  const PUBLIC_PAGES = ["index.html", ""];
+
+  if (PUBLIC_PAGES.includes(currentPage)) {
     if (session) {
       window.location.href = "app.html";
       return;
     }
-
     setupLogin();
     return;
   }
 
-  // App page
-  if (currentPage === "app.html") {
-    if (!session) {
-      window.location.href = "index.html";
-      return;
-    }
-
-    setupApp(session);
+// Every other page requires auth
+  if (!session) {
+    window.location.href = "index.html";
+    return;
   }
+  setupApp(session);
 });
 
 
