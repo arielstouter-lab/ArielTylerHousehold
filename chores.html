@@ -6,23 +6,6 @@
 <script src="app.js"></script>
 
 <style>
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:transparent;}
-  .cl-back {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 16px;
-    padding: 7px 12px;
-    border-radius: 8px;
-    color: var(--green);
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-  }
-  .cl-back:hover {
-    background: var(--card);
-  }
   .cl-beam-label{font-size:12.5px;color:var(--ink-soft);margin:0 0 12px;}
   .cl-beam-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
   .cl-beam-row:last-child{margin-bottom:0;}
@@ -65,7 +48,7 @@
   .cl-chore-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
   .cl-chore-top input[type=text]{
     flex:1;border:none;background:transparent;font-size:14.5px;font-weight:600;color:var(--ink);
-    font-family:'Inter',sans-serif;padding:3px 2px;border-bottom:1px dashed transparent;
+    padding:3px 2px;border-bottom:1px dashed transparent;
   }
   .cl-chore-top input[type=text]:focus{outline:none;border-bottom:1px dashed var(--green);}
   .cl-del{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:15px;padding:2px;line-height:1;}
@@ -75,7 +58,7 @@
   .cl-field{display:flex;align-items:center;gap:5px;}
   .cl-field input[type=number]{
     width:52px;border:1px solid var(--line);background:var(--paper);
-    font-variant-numeric:tabular-nums;font-family:'Inter',sans-serif;font-size:13px;
+    font-variant-numeric:tabular-nums;font-size:13px;
     padding:3px 5px;color:var(--ink);
   }
   .cl-field input[type=number]:focus{outline:none;border-color:var(--green);}
@@ -94,7 +77,7 @@
   }
   .cl-split-chip input[type=number]{
     width:38px;border:none;background:transparent;text-align:right;
-    font-variant-numeric:tabular-nums;font-family:'Inter',sans-serif;font-size:12px;color:var(--ink);
+    font-variant-numeric:tabular-nums;font-size:12px;color:var(--ink);
   }
   .cl-split-chip input[type=number]:focus{outline:none;}
   .cl-split-total{font-size:11px;color:var(--ink-soft);margin-left:2px;}
@@ -104,30 +87,20 @@
   .cl-dislike-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;}
   .cl-dislike-chip{
     display:flex;align-items:center;gap:4px;background:var(--paper);
-    border-style:dashed;padding:3px 6px;font-size:12px;
+    border: 1 px solid var(--green);padding:3px 6px;font-size:12px;
   }
   .cl-dislike-chip input[type=number]{
-    width:34px;border:none;background:transparent;text-align:right;
-    font-variant-numeric:tabular-nums;font-family:'Inter',sans-serif;font-size:12px;color:var(--ink);
+    width:34px;border: 1px dashed var(--danger);background:transparent;text-align:right;
+    font-variant-numeric:tabular-nums;font-size:12px;color:var(--ink);
   }
   .cl-dislike-chip input[type=number]:focus{outline:none;}
 
   .cl-add-row{display:flex;gap:8px;margin-top:10px;padding:0 16px 16px;}
   .cl-add-row input{
     flex:1;padding:7px 9px;border:1px solid var(--line);background:var(--paper);
-    font-family:'Inter',sans-serif;font-size:13.5px;color:var(--ink);
+    font-size:13.5px;color:var(--ink);
   }
   .cl-add-row input:focus{outline:none;border-color:var(--green);}
-
-  .cl-btn{
-    font-family:'Inter',sans-serif;font-weight:600;font-size:13px;
-    padding:8px 14px;border:1px solid var(--green);background:var(--green);
-    color:var(--paper);cursor:pointer;
-  }
-  .cl-btn:hover{background:var(--green-soft);border-color:var(--green-soft);}
-  .cl-btn.ghost{background:transparent;color:var(--green);}
-  .cl-btn.ghost:hover{background:var(--green);color:var(--paper);}
-  .cl-btn.small{padding:5px 10px;font-size:12px;}
 
   .cl-panel-actions{display:flex;gap:8px;padding:12px 16px 16px;border-top:1px solid var(--line);flex-wrap:wrap;}
 
@@ -156,7 +129,7 @@
   .cl-add-person{display:flex;gap:8px;flex:1;}
   .cl-add-person input{
     flex:1;padding:7px 9px;border:1px solid var(--line);background:var(--paper);
-    font-family:'Inter',sans-serif;font-size:13.5px;
+    font-size:13.5px;
   }
   .cl-add-person input:focus{outline:none;border-color:var(--green);}
 
@@ -168,7 +141,7 @@
 <div class="app-shell">
 
   <main class="main-content">
-    <a href="app.html" class="cl-back">&larr; Back</a>
+    <a href="app.html" class="back-link">&larr; Back</a>
 
     <header class="topbar">
       <div class="text-center">
@@ -188,12 +161,12 @@
         <div class="card-row">
           <div class="cl-panel-head">
             <h2 class="cl-panel-title">Chores</h2>
-            <span class="cl-panel-sub">pts = ×/week &times; min &times; <em>their</em> dislike(1&ndash;10) &times; their share%</span>
+            <span class="cl-panel-sub">pts = ×/week &times; min &times; their dislike(1&ndash;10) &times; their share %</span>
           </div>
           <div class="cl-chore-list" id="cl-chore-list"></div>
           <div class="cl-add-row">
             <input type="text" id="cl-new-chore-name" placeholder="New chore, e.g. Vacuum living room" />
-            <button class="cl-btn small" id="cl-add-chore">Add</button>
+            <button class="button button-primary button-sm" id="cl-add-chore">Add</button>
           </div>
           <div class="cl-panel-actions">
             <button type="button" id="cl-auto-balance" class="button button-primary">
@@ -214,7 +187,7 @@
           <div class="cl-panel-actions">
             <div class="cl-add-person">
               <input type="text" id="cl-new-person-name" placeholder="Add a person" />
-              <button class="cl-btn small" id="cl-add-person">Add</button>
+              <button class="button button-primary button-sm" id="cl-add-person">Add</button>
             </div>
           </div>
         </div>
