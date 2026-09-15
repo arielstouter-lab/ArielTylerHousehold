@@ -421,6 +421,7 @@ input {
 
 .full-width-box {
   padding: 30px;
+  margin-bottom: 20px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--card);
@@ -454,10 +455,10 @@ input {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-.stat-card {
+.card-row {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -467,15 +468,18 @@ input {
   background: var(--card);
 }
 
-.stat-label {
+.card-label {
   color: var(--muted);
   font-size: 12px;
 }
 
-.stat-card strong {
+.card-row strong {
   font-size: 18px;
 }
 
+.text-center {
+  text-align: center;
+}
 
 /* =========================
    Mobile

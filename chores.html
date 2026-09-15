@@ -21,12 +21,6 @@
   .cl-back:hover {
     background: var(--card);
   }
-  .cl-beam{
-    background:var(--card);
-    border:1px solid var(--line);
-    padding:16px 18px 14px;
-    margin:18px 0 26px;
-  }
   .cl-beam-label{font-size:12.5px;color:var(--ink-soft);margin:0 0 12px;}
   .cl-beam-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
   .cl-beam-row:last-child{margin-bottom:0;}
@@ -177,7 +171,7 @@
       <a href="app.html" class="cl-back">&larr; Back</a>
 
       <header class="topbar">
-        <div>
+        <div class="text-center">
           <h1>The Chore Ledger</h1>
           <p>Each person rates their own dislike of a chore — so the same chore is worth more points to whoever minds it more.</p>
         </div>
@@ -191,7 +185,7 @@
         </div>
 
         <div class="cl-grid">
-          <div class="cl-panel">
+          <div class="card-row">
             <div class="cl-panel-head">
               <h2 class="cl-panel-title">Chores</h2>
               <span class="cl-panel-sub">pts = ×/week &times; min &times; <em>their</em> dislike(1&ndash;10) &times; their share%</span>
@@ -211,7 +205,7 @@
             </div>
           </div>
 
-          <div class="cl-panel">
+          <div class="card-row">
             <div class="cl-panel-head">
               <h2 class="cl-panel-title">People</h2>
               <span class="cl-panel-sub" id="cl-target-label"></span>
