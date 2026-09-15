@@ -479,7 +479,8 @@ input {
 
 .text-center {
   text-align: center;
-  outline: 2px solid red;
+  flex-grow: 1;
+  width: 100%;
 }
 
 /* =========================
