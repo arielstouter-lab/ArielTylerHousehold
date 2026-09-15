@@ -1,16 +1,22 @@
 :root {
-  --bg: #f5f6f8;
-  --surface: #ffffff;
   --border: #e5e7eb;
-  --text: #111827;
   --muted: #6b7280;
-  --primary: #111827;
-  --primary-hover: #252b36;
-  --danger: #b42318;
+  --primary: #37533F;
+  --primary-hover: #5C7A67;
+  --danger: #A6432F;
   --danger-bg: #fef3f2;
-  --sidebar: #111827;
-  --sidebar-text: #d1d5db;
+  --sidebar: #37533F;
+  --sidebar-text: #C9C2A8;
   --sidebar-active: #ffffff;
+  --paper:#EFEBDD;
+  --card:#FBF8EF;
+  --ink:#24261F;
+  --ink-soft:#5B5B4E;
+  --green:#37533F;
+  --green-soft:#5C7A67;
+  --ochre:#B8862E;
+  --brick:#A6432F;
+  --line:#C9C2A8;
   --radius: 12px;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
@@ -31,8 +37,8 @@ body {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-  color: var(--text);
-  background: var(--bg);
+  color: var(--ink);
+  background: var(--paper);
 }
 
 button,
@@ -57,7 +63,7 @@ input {
       #e9edf5 0,
       transparent 35%
     ),
-    var(--bg);
+    var(--paper);
 }
 
 .auth-container {
@@ -66,7 +72,7 @@ input {
 }
 
 .auth-card {
-  background: var(--surface);
+  background: var(--card);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 40px;
@@ -138,7 +144,7 @@ input {
   border: 1px solid #d1d5db;
   border-radius: 9px;
   outline: none;
-  color: var(--text);
+  color: var(--ink);
   background: white;
   transition:
     border-color 0.15s,
@@ -176,7 +182,7 @@ input {
 }
 
 .password-toggle:hover {
-  color: var(--text);
+  color: var(--ink);
 }
 
 .button {
@@ -224,6 +230,10 @@ input {
   border-top-color: white;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
+}
+
+.spinner[hidden] {
+  display: none;
 }
 
 @keyframes spin {
@@ -369,7 +379,7 @@ input {
   align-items: center;
   padding: 20px 40px;
   border-bottom: 1px solid var(--border);
-  background: var(--surface);
+  background: var(--card);
 }
 
 .topbar h1 {
@@ -394,7 +404,7 @@ input {
   padding: 30px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--surface);
+  background: var(--card);
   box-shadow: var(--shadow);
 }
 
@@ -435,7 +445,7 @@ input {
   padding: 22px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--surface);
+  background: var(--card);
 }
 
 .stat-label {
