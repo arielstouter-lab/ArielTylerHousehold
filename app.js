@@ -4,6 +4,7 @@ const supabaseClient = createClient(
   window.APP_CONFIG.supabaseUrl,
   window.APP_CONFIG.supabaseKey
 );
+window.supabaseClient = supabaseClient;
 
 document.addEventListener("DOMContentLoaded", async () => {
   const currentPage = window.location.pathname.split("/").pop() || "index.html";
