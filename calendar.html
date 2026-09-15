@@ -203,8 +203,6 @@
             if (season === currentSeason) return;
             currentSeason = season;
 
-            document.body.dataset.season = season;
-
             const myToken = ++loadToken;
             const el = document.body;
 
@@ -223,6 +221,7 @@
                 el.addEventListener('transitionend', swapImage, { once: true });
                 el.classList.remove('img-loaded');
             } else {
+                el.dataset.season = season;
                 swapImage();
             }
         }
