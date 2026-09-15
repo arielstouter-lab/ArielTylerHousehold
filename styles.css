@@ -186,7 +186,7 @@ input {
 }
 
 .button {
-  width: 100%;
+  width: auto;
   height: 46px;
   border: 0;
   border-radius: 9px;
@@ -215,6 +215,11 @@ input {
   background: var(--paper);
   color: var(--green);
 }
+
+.button-ghost:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
 
 .form-error {
   margin: -4px 0 16px;
@@ -255,6 +260,11 @@ input {
 .app-shell {
   min-height: 100vh;
   display: flex;
+}
+
+/* Override for pages without a sidebar */
+.app-shell--no-sidebar {
+  grid-template-columns: 1fr; /* Changes layout to a single full-width column */
 }
 
 .sidebar {
@@ -407,6 +417,14 @@ input {
 }
 
 .welcome-card {
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.full-width-box {
   padding: 30px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
