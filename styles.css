@@ -541,7 +541,9 @@ input {
 .cl-field input[type=number],
 .cl-split-chip input[type=number],
 .cl-dislike-chip input[type=number] {
-  width: 44px;
+  width: auto;
+  min-width: 2.5ch;
+  field-sizing: content;
   border: 1px solid var(--line);
   background: var(--paper);
   font-variant-numeric: tabular-nums;

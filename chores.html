@@ -139,7 +139,7 @@
         <div class="card-row">
           <div class="cl-panel-head">
             <h2 class="cl-panel-title">Chores</h2>
-            <span class="cl-panel-sub">pts = ×/week &times; min &times; their dislike(1&ndash;10) &times; their share %</span>
+            <span class="cl-panel-sub">pts = ×/week &times; minutes &times; their dislike(1&ndash;10) &times; their share %</span>
           </div>
           <div class="cl-chore-list" id="cl-chore-list"></div>
           <div class="cl-add-row">
@@ -414,7 +414,7 @@
         <div class="cl-chore-card" data-row="${c.id}">
           <div class="cl-chore-top">
             <input type="text" value="${escapeAttr(c.name)}" data-field="name" data-chore="${c.id}" />
-            <span class="cl-pts-badge" data-pts-badge="${c.id}">${choreTotalAtCurrentSplit(c)} pts/wk<small>at current split</small></span>
+            <span class="cl-pts-badge" data-pts-badge="${c.id}">${choreTotalAtCurrentSplit(c)} pts/wk</span>
             <button class="cl-del" data-del-chore="${c.id}" title="Remove chore">✕</button>
           </div>
           <div class="cl-chip-groups">
