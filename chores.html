@@ -1,6 +1,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script src="app.js"></script>
 
 <style>
   *{box-sizing:border-box;}
@@ -13,6 +14,21 @@
     line-height:1.4;
   }
   .cl-wrap{max-width:980px;margin:0 auto;}
+  .cl-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 16px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    color: var(--green);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .cl-back:hover {
+    background: var(--card);
+  }
   .cl-header{margin-bottom:22px;}
   .cl-title{
     font-family:'Fraunces',serif;
@@ -176,6 +192,7 @@
 <div id="cl-root">
   <div class="cl-wrap">
     <div class="cl-header">
+      <a href="app.html" class="cl-back">&larr; Back</a>
       <h1 class="cl-title">The Chore Ledger</h1>
       <p class="cl-tagline">Each person rates their own dislike of a chore — so the same chore is worth more points to whoever minds it more.</p>
     </div>
