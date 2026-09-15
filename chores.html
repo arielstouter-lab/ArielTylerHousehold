@@ -173,9 +173,8 @@
 <body class="app-page">
   <div class="app-shell">
 
-    <a href="app.html" class="cl-back">&larr; Back</a>
-
     <main class="main-content">
+      <a href="app.html" class="cl-back">&larr; Back</a>
 
       <header class="topbar">
         <div>
@@ -201,8 +200,12 @@
               <button class="cl-btn small" id="cl-add-chore">Add</button>
             </div>
             <div class="cl-panel-actions">
-              <button class="cl-btn" id="cl-auto-balance">Auto-balance</button>
-              <button class="cl-btn ghost small" id="cl-clear-assign">Reset all to unsplit</button>
+              <button type="button" id="cl-auto-balance" class="button button-primary">
+                <span id="auto-balance-text">Auto Balance</span>
+              </button>
+              <button type="button" id="cl-clear-assign" class="button button-ghost">
+                <span id="clear-assign">Reset all to unsplit</span>
+              </button>
             </div>
           </div>
 

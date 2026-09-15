@@ -204,11 +204,16 @@ input {
 
 .button-primary {
   background: var(--primary);
-  color: white;
+  color: var(--paper);
 }
 
 .button-primary:hover:not(:disabled) {
   background: var(--primary-hover);
+}
+
+.button-ghost {
+  background: var(--paper);
+  color: var(--green);
 }
 
 .form-error {
