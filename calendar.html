@@ -1,0 +1,327 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
+
+<style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;background:transparent;}
+    .cal-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 16px;
+        padding: 7px 12px;
+        border-radius: 8px;
+        color: var(--green);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+    }
+    .cal-back:hover { background: var(--card); }
+
+    .cal-grid-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:22px;}
+    @media (max-width:780px){.cal-grid-layout{grid-template-columns:1fr;}}
+
+    .cal-panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);}
+    .cal-panel-head{
+        display:flex;align-items:center;justify-content:space-between;
+        padding:14px 16px;border-bottom:1px solid var(--line);
+    }
+    .cal-panel-title{font-family:'Fraunces',serif;font-weight:600;font-size:18px;margin:0;}
+    .cal-nav{display:flex;align-items:center;gap:10px;}
+    .cal-nav-btn{
+        border:1px solid var(--line);background:var(--paper);color:var(--ink);
+        border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:14px;
+    }
+    .cal-nav-btn:hover{background:var(--line);}
+    .cal-month-label{font-weight:600;font-size:14px;min-width:120px;text-align:center;}
+
+    .cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);padding:10px 12px 0;gap:6px;}
+    .cal-weekday{text-align:center;font-size:11px;color:var(--ink-soft);font-weight:600;}
+
+    .cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:8px 12px 16px;}
+    .cal-day{
+        min-height:64px;border:1px solid var(--line);border-radius:8px;
+        background:var(--paper);padding:6px;cursor:pointer;display:flex;flex-direction:column;gap:4px;
+    }
+    .cal-day:hover{border-color:var(--green-soft);}
+    .cal-day.other-month{opacity:0.35;}
+    .cal-day.selected{border-color:var(--green);border-width:2px;background:var(--card);}
+    .cal-day.today .cal-day-num{color:var(--ochre);font-weight:700;}
+    .cal-day-num{font-size:12px;font-weight:600;color:var(--ink);}
+    .cal-day-dot-row{display:flex;flex-wrap:wrap;gap:3px;}
+    .cal-day-dot{width:6px;height:6px;border-radius:50%;background:var(--green-soft);}
+    .cal-day-count{font-size:10px;color:var(--ink-soft);}
+
+    .cal-selected-label{font-size:11.5px;color:var(--ink-soft);}
+    .cal-events{padding:6px 16px 6px;}
+    .cal-event{
+        display:flex;align-items:center;justify-content:space-between;gap:8px;
+        background:var(--paper);border:1px solid var(--line);border-radius:8px;
+        padding:8px 10px;margin-bottom:6px;font-size:13.5px;
+    }
+    .cal-event-del{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:14px;padding:2px;line-height:1;}
+    .cal-event-del:hover{color:var(--brick);}
+    .cal-empty{color:var(--ink-soft);font-size:12.5px;font-style:italic;padding:4px 0 12px;}
+
+    .cal-add-row{display:flex;gap:8px;padding:6px 16px 16px;}
+    .cal-add-row input{
+        flex:1;padding:7px 9px;border:1px solid var(--line);border-radius:9px;background:var(--paper);
+        font-family:'Inter',sans-serif;font-size:13.5px;color:var(--ink);
+    }
+    .cal-add-row input:focus{outline:none;border-color:var(--green);}
+    .cal-btn{
+        font-family:'Inter',sans-serif;font-weight:600;font-size:13px;
+        padding:8px 14px;border:1px solid var(--green);background:var(--green);
+        color:var(--paper);cursor:pointer;border-radius:9px;
+    }
+    .cal-btn:hover{background:var(--green-soft);border-color:var(--green-soft);}
+
+    .cal-status{font-size:11.5px;color:var(--ink-soft);margin-bottom:10px;min-height:14px;}
+</style>
+
+<body class="app-page">
+<div class="app-shell">
+    <main class="main-content">
+        <a href="app.html" class="cal-back">&larr; Back</a>
+
+        <header class="topbar">
+            <div class="text-center">
+                <h1>Calendar</h1>
+                <p>Shared household events — click a day to add or remove things.</p>
+            </div>
+        </header>
+
+        <section class="content">
+            <div class="cal-status" id="cal-status"></div>
+
+            <div class="cal-grid-layout">
+                <div class="cal-panel">
+                    <div class="cal-panel-head">
+                        <h2 class="cal-panel-title">Month</h2>
+                        <div class="cal-nav">
+                            <button class="cal-nav-btn" id="cal-prev">&lsaquo;</button>
+                            <span class="cal-month-label" id="cal-month-label"></span>
+                            <button class="cal-nav-btn" id="cal-next">&rsaquo;</button>
+                        </div>
+                    </div>
+                    <div class="cal-weekdays">
+                        <div class="cal-weekday">Su</div><div class="cal-weekday">Mo</div><div class="cal-weekday">Tu</div>
+                        <div class="cal-weekday">We</div><div class="cal-weekday">Th</div><div class="cal-weekday">Fr</div>
+                        <div class="cal-weekday">Sa</div>
+                    </div>
+                    <div class="cal-days" id="cal-days"></div>
+                </div>
+
+                <div class="cal-panel">
+                    <div class="cal-panel-head">
+                        <h2 class="cal-panel-title">Events</h2>
+                        <span class="cal-selected-label" id="cal-selected-label"></span>
+                    </div>
+                    <div class="cal-events" id="cal-events"></div>
+                    <div class="cal-add-row">
+                        <input type="text" id="cal-new-event" placeholder="Add an event for this day" />
+                        <button class="cal-btn" id="cal-add-event">Add</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+
+<script>
+    (function(){
+        const sb = window.supabaseClient;
+        let viewYear, viewMonth; // 0-indexed month
+        let selectedDate; // 'YYYY-MM-DD'
+        let eventsByDate = {}; // {'YYYY-MM-DD': [{id, title}]}
+
+        function pad(n){ return String(n).padStart(2,'0'); }
+        function toDateStr(y,m,d){ return `${y}-${pad(m+1)}-${pad(d)}`; }
+        function todayStr(){
+            const t = new Date();
+            return toDateStr(t.getFullYear(), t.getMonth(), t.getDate());
+        }
+
+        function setStatus(msg){
+            const el = document.getElementById('cal-status');
+            el.textContent = msg || '';
+            if(msg) setTimeout(()=>{ if(el.textContent===msg) el.textContent=''; }, 2200);
+        }
+
+        function escapeHtml(s){
+            return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+        }
+
+        async function loadMonth(){
+            const first = toDateStr(viewYear, viewMonth, 1);
+            const lastDay = new Date(viewYear, viewMonth + 1, 0).getDate();
+            const last = toDateStr(viewYear, viewMonth, lastDay);
+            try{
+                const {data, error} = await sb.from('household_events')
+                    .select('*')
+                    .gte('event_date', first)
+                    .lte('event_date', last)
+                    .order('created_at');
+                if(error) throw error;
+                eventsByDate = {};
+                (data || []).forEach(ev => {
+                    eventsByDate[ev.event_date] = eventsByDate[ev.event_date] || [];
+                    eventsByDate[ev.event_date].push({id: ev.id, title: ev.title});
+                });
+            } catch(e){
+                setStatus('Could not load events.');
+                eventsByDate = {};
+            }
+            renderGrid();
+            renderEventsPanel();
+        }
+
+        function renderGrid(){
+            const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            document.getElementById('cal-month-label').textContent = `${monthNames[viewMonth]} ${viewYear}`;
+
+            const firstOfMonth = new Date(viewYear, viewMonth, 1);
+            const startDow = firstOfMonth.getDay(); // 0=Sun
+            const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+            const daysInPrevMonth = new Date(viewYear, viewMonth, 0).getDate();
+            const today = todayStr();
+
+            const cells = [];
+            for(let i = startDow - 1; i >= 0; i--){
+                const d = daysInPrevMonth - i;
+                const m = viewMonth === 0 ? 11 : viewMonth - 1;
+                const y = viewMonth === 0 ? viewYear - 1 : viewYear;
+                cells.push({dateStr: toDateStr(y,m,d), label: d, otherMonth: true});
+            }
+            for(let d = 1; d <= daysInMonth; d++){
+                cells.push({dateStr: toDateStr(viewYear, viewMonth, d), label: d, otherMonth: false});
+            }
+            while(cells.length % 7 !== 0 || cells.length < 42){
+                const last = cells[cells.length - 1];
+                const [y,m,d] = last.dateStr.split('-').map(Number);
+                const next = new Date(y, m - 1, d + 1);
+                cells.push({dateStr: toDateStr(next.getFullYear(), next.getMonth(), next.getDate()), label: next.getDate(), otherMonth: true});
+                if(cells.length >= 42) break;
+            }
+
+            document.getElementById('cal-days').innerHTML = cells.map(c => {
+                const count = (eventsByDate[c.dateStr] || []).length;
+                const classes = ['cal-day'];
+                if(c.otherMonth) classes.push('other-month');
+                if(c.dateStr === today) classes.push('today');
+                if(c.dateStr === selectedDate) classes.push('selected');
+                const dots = count ? `<div class="cal-day-dot-row">${'<span class="cal-day-dot"></span>'.repeat(Math.min(count,4))}</div>` : '';
+                const countLabel = count ? `<span class="cal-day-count">${count} event${count>1?'s':''}</span>` : '';
+                return `<div class="${classes.join(' ')}" data-date="${c.dateStr}">
+        <span class="cal-day-num">${c.label}</span>
+        ${dots}${countLabel}
+      </div>`;
+            }).join('');
+        }
+
+        function renderEventsPanel(){
+            const label = document.getElementById('cal-selected-label');
+            const list = document.getElementById('cal-events');
+            if(!selectedDate){
+                label.textContent = '';
+                list.innerHTML = '<p class="cal-empty">Select a day to see events.</p>';
+                return;
+            }
+            const d = new Date(selectedDate + 'T00:00:00');
+            label.textContent = d.toLocaleDateString(undefined, {weekday:'short', month:'short', day:'numeric'});
+
+            const evs = eventsByDate[selectedDate] || [];
+            list.innerHTML = evs.length
+                ? evs.map(ev => `
+          <div class="cal-event" data-event-row="${ev.id}">
+            <span>${escapeHtml(ev.title)}</span>
+            <button class="cal-event-del" data-del-event="${ev.id}" title="Remove">✕</button>
+          </div>`).join('')
+                : '<p class="cal-empty">No events yet.</p>';
+        }
+
+        function selectDate(dateStr){
+            selectedDate = dateStr;
+            const [y,m] = dateStr.split('-').map(Number);
+            if(y !== viewYear || (m - 1) !== viewMonth){
+                viewYear = y; viewMonth = m - 1;
+                loadMonth();
+            } else {
+                renderGrid();
+                renderEventsPanel();
+            }
+        }
+
+        document.getElementById('cal-prev').addEventListener('click', () => {
+            viewMonth--;
+            if(viewMonth < 0){ viewMonth = 11; viewYear--; }
+            loadMonth();
+        });
+        document.getElementById('cal-next').addEventListener('click', () => {
+            viewMonth++;
+            if(viewMonth > 11){ viewMonth = 0; viewYear++; }
+            loadMonth();
+        });
+
+        document.getElementById('cal-days').addEventListener('click', (e) => {
+            const cell = e.target.closest('.cal-day');
+            if(!cell) return;
+            selectDate(cell.dataset.date);
+        });
+
+        document.getElementById('cal-add-event').addEventListener('click', async () => {
+            if(!selectedDate){ setStatus('Select a day first.'); return; }
+            const input = document.getElementById('cal-new-event');
+            const title = input.value.trim();
+            if(!title) return;
+            try{
+                const {data, error} = await sb.from('household_events')
+                    .insert({event_date: selectedDate, title})
+                    .select()
+                    .single();
+                if(error || !data){ setStatus('Could not add event.'); return; }
+                eventsByDate[selectedDate] = eventsByDate[selectedDate] || [];
+                eventsByDate[selectedDate].push({id: data.id, title: data.title});
+                input.value = '';
+                renderGrid();
+                renderEventsPanel();
+            } catch(e){
+                setStatus('Could not add event.');
+            }
+        });
+
+        document.getElementById('cal-events').addEventListener('click', async (e) => {
+            const btn = e.target.closest('[data-del-event]');
+            if(!btn) return;
+            const id = btn.getAttribute('data-del-event');
+            try{
+                await sb.from('household_events').delete().eq('id', id);
+                eventsByDate[selectedDate] = (eventsByDate[selectedDate] || []).filter(ev => ev.id !== id);
+                renderGrid();
+                renderEventsPanel();
+            } catch(err){
+                setStatus('Could not remove event.');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'Enter' && e.target.id === 'cal-new-event'){
+                document.getElementById('cal-add-event').click();
+            }
+        });
+
+        function init(){
+            const now = new Date();
+            viewYear = now.getFullYear();
+            viewMonth = now.getMonth();
+            selectedDate = todayStr();
+            loadMonth();
+        }
+
+        document.addEventListener('app:ready', init, { once: true });
+    })();
+</script>
