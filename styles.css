@@ -103,11 +103,6 @@ input {
   background-repeat: no-repeat;
 }
 
-.sidebar-brand .brand-mark {
-  width: 32px;
-  height: 32px;
-}
-
 .auth-header {
   margin-bottom: 28px;
 }
@@ -312,8 +307,6 @@ input {
 .sidebar-brand .brand-mark {
   width: 32px;
   height: 32px;
-  background: white;
-  color: var(--sidebar);
 }
 
 .sidebar-nav {
