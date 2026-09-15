@@ -428,9 +428,8 @@ input {
 }
 
 .content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px;
+  max-width: none;
+  padding: 20px 40px;
 }
 
 .welcome-card {
@@ -504,6 +503,93 @@ input {
   text-align: center;
   flex-grow: 1;
   width: 100%;
+}
+
+/* =========================
+   Chips & Input Badges
+========================= */
+
+.cl-chip-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  align-items: flex-start;
+}
+
+.cl-chip-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chip,
+.cl-field,
+.cl-split-chip,
+.cl-dislike-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 3px 6px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.chip input[type=number],
+.cl-field input[type=number],
+.cl-split-chip input[type=number],
+.cl-dislike-chip input[type=number] {
+  width: 44px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  padding: 3px 5px;
+  color: var(--ink);
+  border-radius: 4px;
+  text-align: right;
+}
+
+.cl-field input[type=number] {
+  width: 52px;
+}
+
+.cl-split-chip input[type=number] {
+  width: 40px;
+}
+
+.cl-dislike-chip input[type=number] {
+  width: 36px;
+}
+
+.chip input[type=number]:focus,
+.cl-field input[type=number]:focus,
+.cl-split-chip input[type=number]:focus,
+.cl-dislike-chip input[type=number]:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+.chip-danger,
+.cl-dislike-chip {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: var(--paper);
+}
+
+.chip-danger input[type=number],
+.cl-dislike-chip input[type=number] {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.chip-danger input[type=number]:focus,
+.cl-dislike-chip input[type=number]:focus {
+  outline: none;
+  border-color: var(--paper);
 }
 
 /* =========================

@@ -45,55 +45,33 @@
   .cl-chore-list{padding:10px 16px 6px;}
   .cl-chore-card{border-bottom:1px solid var(--line);padding:12px 0;}
   .cl-chore-card:last-child{border-bottom:none;}
-  .cl-chore-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .cl-chore-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
   .cl-chore-top input[type=text]{
     flex:1;border:none;background:transparent;font-size:14.5px;font-weight:600;color:var(--ink);
-    padding:3px 2px;border-bottom:1px dashed transparent;
+    padding:3px 2px;border-bottom:1px dashed transparent;min-width:0;
   }
   .cl-chore-top input[type=text]:focus{outline:none;border-bottom:1px dashed var(--green);}
-  .cl-del{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:15px;padding:2px;line-height:1;}
+  .cl-del{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:15px;padding:2px 4px;line-height:1;flex-shrink:0;}
   .cl-del:hover{color:var(--brick);}
 
-  .cl-chore-fields{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:9px;font-size:12px;color:var(--ink-soft);}
-  .cl-field{display:flex;align-items:center;gap:5px;}
-  .cl-field input[type=number]{
-    width:52px;border:1px solid var(--line);background:var(--paper);
-    font-variant-numeric:tabular-nums;font-size:13px;
-    padding:3px 5px;color:var(--ink);
-  }
-  .cl-field input[type=number]:focus{outline:none;border-color:var(--green);}
   .cl-pts-badge{
     margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;color:var(--ochre);font-size:13.5px;
-    text-align:right;
+    text-align:right;white-space:nowrap;flex-shrink:0;
   }
   .cl-pts-badge small{display:block;font-weight:500;color:var(--ink-soft);font-size:10px;}
 
-  .cl-subrow-label{font-size:10.5px;color:var(--ink-soft);margin:6px 0 4px;text-transform:none;}
+  .cl-chip-groups{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-start;}
+  .cl-chip-group{display:flex;flex-direction:column;gap:4px;}
+
+  .cl-chore-fields{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .cl-subrow-label{font-size:10.5px;color:var(--ink-soft);margin:0 0 2px;text-transform:none;white-space:nowrap;}
 
   .cl-split-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
-  .cl-split-chip{
-    display:flex;align-items:center;gap:4px;background:var(--paper);
-    border:8px solid var(--line);padding:3px 6px;font-size:12px;
-  }
-  .cl-split-chip input[type=number]{
-    width:38px;border:none;background:transparent;text-align:right;
-    font-variant-numeric:tabular-nums;font-size:12px;color:var(--ink);
-  }
-  .cl-split-chip input[type=number]:focus{outline:none;}
   .cl-split-total{font-size:11px;color:var(--ink-soft);margin-left:2px;}
   .cl-split-total.bad{color:var(--brick);font-weight:600;}
   .cl-split-total.good{color:var(--green);font-weight:600;}
 
-  .cl-dislike-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;}
-  .cl-dislike-chip{
-    display:flex;align-items:center;gap:4px;background:var(--paper);
-    border: 1 px solid var(--green);padding:3px 6px;font-size:12px;
-  }
-  .cl-dislike-chip input[type=number]{
-    width:34px;border: 1px dashed var(--danger);background:transparent;text-align:right;
-    font-variant-numeric:tabular-nums;font-size:12px;color:var(--ink);
-  }
-  .cl-dislike-chip input[type=number]:focus{outline:none;}
+  .cl-dislike-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
 
   .cl-add-row{display:flex;gap:8px;margin-top:10px;padding:0 16px 16px;}
   .cl-add-row input{
@@ -417,7 +395,7 @@
         const totalClass = total === 100 ? 'good' : (total === 0 ? '' : 'bad');
 
         const dislikeChips = state.people.map(p => `
-        <div class="cl-dislike-chip" title="${escapeAttr(p.name)}'s dislike of this chore">
+        <div class="chip chip-danger cl-dislike-chip" title="${escapeAttr(p.name)}'s dislike of this chore">
           <span>${escapeHtml(p.name)}</span>
           <input type="number" min="1" max="10" value="${dislikeOf(c, p.id)}" data-dislike-chore="${c.id}" data-dislike-person="${p.id}" />
         </div>`).join('');
@@ -425,7 +403,7 @@
         const splitChips = state.people.map(p => {
           const pct = (state.assignments[c.id] && state.assignments[c.id][p.id]) || 0;
           return `
-          <div class="cl-split-chip">
+          <div class="chip cl-split-chip">
             <span>${escapeHtml(p.name)}</span>
             <input type="number" min="0" max="100" value="${pct}" data-split-chore="${c.id}" data-split-person="${p.id}" />
             <span>%</span>
@@ -436,19 +414,28 @@
         <div class="cl-chore-card" data-row="${c.id}">
           <div class="cl-chore-top">
             <input type="text" value="${escapeAttr(c.name)}" data-field="name" data-chore="${c.id}" />
+            <span class="cl-pts-badge" data-pts-badge="${c.id}">${choreTotalAtCurrentSplit(c)} pts/wk<small>at current split</small></span>
             <button class="cl-del" data-del-chore="${c.id}" title="Remove chore">✕</button>
           </div>
-          <div class="cl-chore-fields">
-            <label class="cl-field">×/week <input type="number" min="0" step="1" value="${c.timesPerWeek}" data-field="timesPerWeek" data-chore="${c.id}" /></label>
-            <label class="cl-field">min <input type="number" min="0" step="1" value="${c.minutes}" data-field="minutes" data-chore="${c.id}" /></label>
-            <span class="cl-pts-badge" data-pts-badge="${c.id}">${choreTotalAtCurrentSplit(c)} pts/wk<small>at current split</small></span>
-          </div>
-          <div class="cl-subrow-label">dislike (1&ndash;10), per person</div>
-          <div class="cl-dislike-row">${dislikeChips}</div>
-          <div class="cl-subrow-label">share of the chore</div>
-          <div class="cl-split-row">
-            ${splitChips}
-            <span class="cl-split-total ${totalClass}" data-split-total="${c.id}">${total}%</span>
+          <div class="cl-chip-groups">
+            <div class="cl-chip-group">
+              <div class="cl-subrow-label">frequency &amp; time</div>
+              <div class="cl-chore-fields">
+                <label class="chip cl-field">×/week <input type="number" min="0" step="1" value="${c.timesPerWeek}" data-field="timesPerWeek" data-chore="${c.id}" /></label>
+                <label class="chip cl-field">min <input type="number" min="0" step="1" value="${c.minutes}" data-field="minutes" data-chore="${c.id}" /></label>
+              </div>
+            </div>
+            <div class="cl-chip-group">
+              <div class="cl-subrow-label">dislike (1&ndash;10), per person</div>
+              <div class="cl-dislike-row">${dislikeChips}</div>
+            </div>
+            <div class="cl-chip-group">
+              <div class="cl-subrow-label">share of the chore</div>
+              <div class="cl-split-row">
+                ${splitChips}
+                <span class="cl-split-total ${totalClass}" data-split-total="${c.id}">${total}%</span>
+              </div>
+            </div>
           </div>
         </div>`;
       }).join('');
