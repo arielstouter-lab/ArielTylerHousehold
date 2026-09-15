@@ -184,47 +184,51 @@
         </div>
       </header>
 
-    </main>
+      <section class="content">
+        <div class="cl-status" id="cl-status"></div>
 
-    <div class="cl-status" id="cl-status"></div>
+        <div class="cl-beam" id="cl-beam"></div>
 
-    <div class="cl-beam" id="cl-beam"></div>
+        <div class="cl-grid">
+          <div class="cl-panel">
+            <div class="cl-panel-head">
+              <h2 class="cl-panel-title">Chores</h2>
+              <span class="cl-panel-sub">pts = ×/week &times; min &times; <em>their</em> dislike(1&ndash;10) &times; their share%</span>
+            </div>
+            <div class="cl-chore-list" id="cl-chore-list"></div>
+            <div class="cl-add-row">
+              <input type="text" id="cl-new-chore-name" placeholder="New chore, e.g. Vacuum living room" />
+              <button class="cl-btn small" id="cl-add-chore">Add</button>
+            </div>
+            <div class="cl-panel-actions">
+              <button class="cl-btn" id="cl-auto-balance">Auto-balance</button>
+              <button class="cl-btn ghost small" id="cl-clear-assign">Reset all to unsplit</button>
+            </div>
+          </div>
 
-    <div class="cl-grid">
-      <div class="cl-panel">
-        <div class="cl-panel-head">
-          <h2 class="cl-panel-title">Chores</h2>
-          <span class="cl-panel-sub">pts = ×/week &times; min &times; <em>their</em> dislike(1&ndash;10) &times; their share%</span>
-        </div>
-        <div class="cl-chore-list" id="cl-chore-list"></div>
-        <div class="cl-add-row">
-          <input type="text" id="cl-new-chore-name" placeholder="New chore, e.g. Vacuum living room" />
-          <button class="cl-btn small" id="cl-add-chore">Add</button>
-        </div>
-        <div class="cl-panel-actions">
-          <button class="cl-btn" id="cl-auto-balance">Auto-balance</button>
-          <button class="cl-btn ghost small" id="cl-clear-assign">Reset all to unsplit</button>
-        </div>
-      </div>
-
-      <div class="cl-panel">
-        <div class="cl-panel-head">
-          <h2 class="cl-panel-title">People</h2>
-          <span class="cl-panel-sub" id="cl-target-label"></span>
-        </div>
-        <div class="cl-people" id="cl-people-list"></div>
-        <div class="cl-panel-actions">
-          <div class="cl-add-person">
-            <input type="text" id="cl-new-person-name" placeholder="Add a person" />
-            <button class="cl-btn small" id="cl-add-person">Add</button>
+          <div class="cl-panel">
+            <div class="cl-panel-head">
+              <h2 class="cl-panel-title">People</h2>
+              <span class="cl-panel-sub" id="cl-target-label"></span>
+            </div>
+            <div class="cl-people" id="cl-people-list"></div>
+            <div class="cl-panel-actions">
+              <div class="cl-add-person">
+                <input type="text" id="cl-new-person-name" placeholder="Add a person" />
+                <button class="cl-btn small" id="cl-add-person">Add</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <p class="cl-note">Saved to this app's shared storage, so it stays put across visits and anyone with the link sees the same ledger — handy for a household, but don't put anything private in a chore name.</p>
+        <p class="cl-note">Saved to this app's shared storage, so it stays put across visits and anyone with the link sees the same ledger — handy for a household, but don't put anything private in a chore name.</p>
+      </section>
+
+    </main>
   </div>
 </body>
+
+
 
 <script>
 (function(){
