@@ -68,7 +68,7 @@ function setupLogin() {
 
     const username = usernameInput.value.trim();
     const password = passwordInput.value;
-    
+
     if (!email || !password) {
       showLoginError("Please enter your email and password.");
       return;
@@ -78,50 +78,49 @@ function setupLogin() {
     buttonText.textContent = "Signing in...";
     spinner.hidden = false;
 
-// Look up the email associated with the username
-const {
-  data: email,
-  error: lookupError
-} = await supabaseClient.rpc("get_email_for_username", {
-  input_username: username
-});
+    // Look up the email associated with the username
+    const {
+      data: email,
+      error: lookupError
+    } = await supabaseClient.rpc("get_email_for_username", {
+      input_username: username
+    });
 
-if (lookupError || !email) {
-  showLoginError("Invalid username or password.");
+    if (lookupError || !email) {
+      showLoginError("Invalid username or password.");
 
-  button.disabled = false;
-  buttonText.textContent = "Sign in";
-  spinner.hidden = true;
+      button.disabled = false;
+      buttonText.textContent = "Sign in";
+      spinner.hidden = true;
 
-  return;
+      return;
+    }
+
+    // Authenticate through Supabase Auth
+    const { error: loginError } =
+      await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+    if (loginError) {
+      showLoginError("Invalid username or password.");
+
+      button.disabled = false;
+      buttonText.textContent = "Sign in";
+      spinner.hidden = true;
+
+      return;
+    }
+
+    window.location.href = "app.html";
+
+      function showLoginError(message) {
+        errorElement.textContent = message;
+        errorElement.hidden = false;
+      }
+    });
 }
-
-// Authenticate through Supabase Auth
-const { error: loginError } =
-  await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
-
-if (loginError) {
-  showLoginError("Invalid username or password.");
-
-  button.disabled = false;
-  buttonText.textContent = "Sign in";
-  spinner.hidden = true;
-
-  return;
-}
-
-window.location.href = "app.html";
-
-  function showLoginError(message) {
-    errorElement.textContent = message;
-    errorElement.hidden = false;
-  }
-}
-}
-
 
 /* -----------------------------
    App
