@@ -262,15 +262,10 @@ input {
   display: flex;
 }
 
-/* Override for pages without a sidebar */
-.app-shell--no-sidebar {
-  grid-template-columns: 1fr; /* Changes layout to a single full-width column */
-}
 
 .sidebar {
-  position: fixed;
-  inset: 0 auto 0 0;
   width: 250px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   padding: 22px 14px;
@@ -385,7 +380,7 @@ input {
 .main-content {
   width: calc(100% - 250px);
   min-height: 100vh;
-  margin-left: 250px;
+  flex-grow: 1;
 }
 
 .topbar {
