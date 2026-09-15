@@ -6,14 +6,6 @@
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:transparent;}
-  #cl-root{
-    color:var(--ink);
-    background:var(--paper);
-    padding:28px 20px 60px;
-    min-height:100%;
-    line-height:1.4;
-  }
-  .cl-wrap{max-width:980px;margin:0 auto;}
   .cl-back {
     display: inline-flex;
     align-items: center;
@@ -29,17 +21,6 @@
   .cl-back:hover {
     background: var(--card);
   }
-  .cl-header{margin-bottom:22px;}
-  .cl-title{
-    font-family:'Fraunces',serif;
-    font-weight:600;
-    font-size:34px;
-    letter-spacing:-0.01em;
-    margin:0 0 4px;
-    color:var(--green);
-  }
-  .cl-tagline{margin:0;color:var(--ink-soft);font-size:14.5px;}
-
   .cl-beam{
     background:var(--card);
     border:1px solid var(--line);
@@ -189,13 +170,13 @@
   .cl-status{font-size:11.5px;color:var(--ink-soft);margin-bottom:10px;min-height:14px;}
 </style>
 
-<div id="cl-root">
-  <div class="cl-wrap">
-    <div class="cl-header">
+<body class="app-page">
+  <div class="app-shell">
+    <main class="main-content">
       <a href="app.html" class="cl-back">&larr; Back</a>
-      <h1 class="cl-title">The Chore Ledger</h1>
-      <p class="cl-tagline">Each person rates their own dislike of a chore — so the same chore is worth more points to whoever minds it more.</p>
-    </div>
+      <h1 class="topbar">The Chore Ledger</h1>
+      <p class="content">Each person rates their own dislike of a chore — so the same chore is worth more points to whoever minds it more.</p>
+    </main>
 
     <div class="cl-status" id="cl-status"></div>
 
@@ -235,7 +216,7 @@
 
     <p class="cl-note">Saved to this app's shared storage, so it stays put across visits and anyone with the link sees the same ledger — handy for a household, but don't put anything private in a chore name.</p>
   </div>
-</div>
+</body>
 
 <script>
 (function(){

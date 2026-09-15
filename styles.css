@@ -384,7 +384,8 @@ input {
 
 .topbar h1 {
   margin: 0 0 3px;
-  font-size: 22px;
+  font-size: 34px;
+  font-family:'Fraunces',serif;
   letter-spacing: -0.3px;
 }
 
