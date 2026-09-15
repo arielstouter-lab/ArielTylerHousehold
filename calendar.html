@@ -176,19 +176,19 @@
             const m = date.getMonth() + 1; // 1-12
             const d = date.getDate();
 
-            // Approximate solstice/equinox dates (can shift by a day year to year)
             if ((m === 3 && d >= 20) || m === 4 || m === 5 || (m === 6 && d < 21)) return 'spring';
             if ((m === 6 && d >= 21) || m === 7 || m === 8 || (m === 9 && d < 22)) return 'summer';
             if ((m === 9 && d >= 22) || m === 10 || m === 11 || (m === 12 && d < 21)) return 'fall';
-            return 'winter'; // Dec 21 - Mar 19
+            return 'winter';
         }
 
-        function updateSeason(m){
-            document.body.dataset.season = getSeason(m);
+        function updateSeason(date){
+            document.body.dataset.season = getSeason(date);
         }
 
-        // Set initial season based on today's date immediately
-        updateSeason(new Date().getMonth());
+        // Today's actual season, day-accurate
+        updateSeason(new Date());
+
 
         function pad(n){ return String(n).padStart(2,'0'); }
         function toDateStr(y,m,d){ return `${y}-${pad(m+1)}-${pad(d)}`; }
@@ -232,7 +232,8 @@
         }
 
         function renderGrid(){
-            updateSeason(viewMonth);
+            // viewMonth has no day — use the 1st of that month as a stand-in
+            updateSeason(new Date(viewYear, viewMonth, 1));
             const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
             document.getElementById('cal-month-label').textContent = `${monthNames[viewMonth]} ${viewYear}`;
 
