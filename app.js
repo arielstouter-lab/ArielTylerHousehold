@@ -50,13 +50,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 ----------------------------- */
 
 async function bootstrapAuth() {
-  const { data: { session } } = await supabase.auth.getSession()
+  const { data: { session } } = await supabaseClient.auth.getSession()
   if (session) return session
 
-  const { data, error } = await supabase.functions.invoke('ip-login')
+  const { data, error } = await supabaseClient.functions.invoke('ip-login')
   if (error || !data?.token_hash) return null
 
-  const { data: verified } = await supabase.auth.verifyOtp({
+  const { data: verified } = await supabaseClient.auth.verifyOtp({
     type: 'magiclink',
     token_hash: data.token_hash,
   })
