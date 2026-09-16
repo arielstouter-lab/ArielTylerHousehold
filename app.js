@@ -9,33 +9,40 @@ window.supabaseClient = supabaseClient;
 document.addEventListener("DOMContentLoaded", async () => {
   const currentPage = window.location.pathname.split("/").pop() || "index.html";
 
-  let {
-    data: { session }
-  } = await supabaseClient.auth.getSession();
+  try {
+    let {
+      data: { session }
+    } = await supabaseClient.auth.getSession();
 
-  // No existing session — see if this network is whitelisted
-  if (!session) {
-    session = await bootstrapAuth();
-  }
+    if (!session) {
+      session = await bootstrapAuth();
+    }
 
-  //Set public pages
-  const PUBLIC_PAGES = ["index.html", ""];
+    const PUBLIC_PAGES = ["index.html", ""];
 
-  if (PUBLIC_PAGES.includes(currentPage)) {
-    if (session) {
-      window.location.href = "app.html";
+    if (PUBLIC_PAGES.includes(currentPage)) {
+      if (session) {
+        window.location.href = "app.html";
+        return;
+      }
+      setupLogin();
       return;
     }
-    setupLogin();
-    return;
-  }
 
-  // Every other page requires auth
-  if (!session) {
-    window.location.href = "index.html";
-    return;
+    if (!session) {
+      window.location.href = "index.html";
+      return;
+    }
+    setupApp(session);
+
+  } catch (err) {
+    console.error("Auth bootstrap failed:", err);
+    if (currentPage !== "index.html" && currentPage !== "") {
+      window.location.href = "index.html";
+    } else {
+      setupLogin();
+    }
   }
-  setupApp(session);
 });
 
 /* -----------------------------
