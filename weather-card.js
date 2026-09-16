@@ -1,4 +1,3 @@
-// weather-card.js
 // Requires: a <div class="weather-card" id="weatherCard"> in the page,
 // and the .weather-card CSS rules (see weather-card.css / styles.css).
 // No API key needed — uses Open-Meteo's free, keyless API.

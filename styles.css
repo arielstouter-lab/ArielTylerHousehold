@@ -610,6 +610,9 @@ input {
 
 @media (max-width: 760px) {
 
+  /* Scale down temp in weather app on mobile */
+  .wc-temp{ font-size:52px; }
+
   /* --- Sidebar container --- */
   .sidebar {
     width: 64px;
