@@ -137,13 +137,14 @@ function renderWeatherCard(raw, place){
     const info = codeInfo(current.weather_code, current.is_day);
     const moonPhase = getMoonPhase(new Date());
 
-    const nowIdx = raw.hourly.time.findIndex(t => t === raw.current.time);
+    const nowTime = new Date(raw.current.time).getTime();
+    const nowIdx = raw.hourly.time.findIndex(t => new Date(t).getTime() >= nowTime);
     const startIdx = nowIdx === -1 ? 0 : nowIdx;
-    const hourly = [1,2,3,4].map(offset => {
-        const idx = startIdx + offset;
+    const hourly = [1, 2, 3, 4].map(offset => {
+        const idx = Math.min(startIdx + offset, raw.hourly.time.length - 1);
         const dt = new Date(raw.hourly.time[idx]);
         return {
-            label: dt.toLocaleTimeString([], {hour:'numeric'}).replace(' ',''),
+            label: dt.toLocaleTimeString([], { hour: 'numeric' }).replace(' ', ''),
             temp: raw.hourly.temperature_2m[idx],
             code: raw.hourly.weather_code[idx],
             isDay: raw.hourly.is_day[idx],
@@ -241,3 +242,35 @@ async function initWeather(){
 }
 
 document.addEventListener("DOMContentLoaded", initWeather);
+
+// ---- Seasonal background ------------------------------------------
+(function initSeasonalBackground() {
+    if (!document.body.classList.contains('cal-page')) return;
+
+    function getSeason(date) {
+        const m = date.getMonth() + 1; // 1-12
+        const d = date.getDate();
+        if ((m === 3 && d >= 20) || m === 4 || m === 5 || (m === 6 && d < 21)) return 'spring';
+        if ((m === 6 && d >= 21) || m === 7 || m === 8 || (m === 9 && d < 22)) return 'summer';
+        if ((m === 9 && d >= 22) || m === 10 || m === 11 || (m === 12 && d < 21)) return 'fall';
+        return 'winter';
+    }
+
+    const seasonImages = {
+        spring: 'spring.jpg',
+        summer: 'summer.jpg',
+        fall: 'fall.jpg',
+        winter: 'winter.jpg'
+    };
+
+    const season = getSeason(new Date());
+    const el = document.body;
+    el.dataset.season = season;
+
+    const img = new Image();
+    img.onload = () => {
+        el.style.setProperty('--season-img', `url(${seasonImages[season]})`);
+        el.classList.add('img-loaded');
+    };
+    img.src = seasonImages[season];
+})();
