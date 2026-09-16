@@ -3,9 +3,21 @@
 // No API key needed — uses Open-Meteo's free, keyless API.
 
 // ---- config -----------------------------------------------------
-// Fixed location — edit these three values to change the card's location.
-const LOCATION = window.WEATHER_LOCATION || { lat: 40.7128, lon: -74.0060, label: "Set location in config.js" };
+// Location is stored in Supabase (table: weather_location), readable only
+// by authenticated users. Reuses window.supabaseClient (set up in app.js)
+// so the request carries the logged-in user's session automatically.
 const STORAGE_KEY = "wc-unit"; // "c" or "f"
+
+async function fetchLocation(){
+    const { data, error } = await window.supabaseClient
+        .from('weather_location')
+        .select('lat, lon, label')
+        .single();
+
+    if (error) throw error;
+    return data; // { lat, lon, label }
+}
+
 // ---- WMO weather code -> { label, icon, accent } -----------------
 // Open-Meteo returns WMO codes: https://open-meteo.com/en/docs
 function codeInfo(code, isDay){
@@ -152,6 +164,7 @@ async function fetchWeather(lat, lon, label){
 async function initWeatherCard(){
     showWeatherCardState("Loading forecast…");
     try{
+        const LOCATION = await fetchLocation();
         const data = await fetchWeather(LOCATION.lat, LOCATION.lon, LOCATION.label);
         renderWeatherCard(data);
     } catch(err){
