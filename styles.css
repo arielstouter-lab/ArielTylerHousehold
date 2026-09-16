@@ -284,13 +284,18 @@ input {
 
 
 .sidebar {
-  width: 250px;
-  flex-shrink: 0;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  overflow-y: auto; /*lets menu scroll if it's too tall */
   padding: 22px 14px;
   background: var(--sidebar);
   color: var(--sidebar-text);
+}
+
+.sidebar-menu {
+  flex: 1 1 auto; /* menu takes remaining space */
+  overflow-y: auto;
 }
 
 .sidebar-brand {
@@ -384,6 +389,8 @@ input {
 }
 
 .logout-button {
+  flex-shrink: 0;
+  margin-top: auto;
   border: 0;
   background: transparent;
   color: var(--green-soft);
@@ -598,44 +605,82 @@ input {
 ========================= */
 
 @media (max-width: 760px) {
+
+  /* --- Sidebar container --- */
   .sidebar {
     width: 64px;
     padding: 18px 8px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden; /* prevents any stray content from spilling out */
+  }
+
+  /* --- Brand / logo area --- */
+  .sidebar-brand span {
+    display: none; /* hide "The Cabin" text, keep the brand-mark icon */
   }
 
   .sidebar-brand {
     justify-content: center;
-    padding: 0;
   }
 
-  .sidebar-brand span,
-  .nav-item:not(.active)::after,
-  .user-info {
-    display: none;
+  /* --- Nav items --- */
+  .sidebar-nav {
+    flex: 1 1 auto;      /* takes remaining vertical space */
+    overflow-y: auto;    /* scrolls internally if too many items */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
   }
 
   .nav-item {
-    justify-content: center;
-    padding: 12px 8px;
-  }
-
-  .sidebar-bottom {
     display: flex;
     justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .nav-label {
+    display: none; /* icon-only on mobile */
+  }
+
+  .nav-icon {
+    font-size: 18px;
+  }
+
+  /* --- Bottom section (user card + logout) --- */
+  .sidebar-bottom {
+    flex-shrink: 0;   /* never gets squeezed or pushed off-screen */
+    margin-top: auto;
+    width: 100%;
   }
 
   .user-card {
-    border-top: 0;
-    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+  }
+
+  .user-info {
+    display: none; /* email won't fit at 64px */
   }
 
   .logout-button {
-    display: none;
+    flex-shrink: 0;
   }
 
+  /* --- Main content --- */
   .main-content {
     width: calc(100% - 64px);
-    margin-left: 64px;
+    /* no margin-left needed — flex handles the offset */
+  }
+
+  .menu-item {
+    justify-content: center;
   }
 
   .topbar {
