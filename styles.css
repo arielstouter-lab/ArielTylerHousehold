@@ -1020,3 +1020,126 @@ Lists page
 }
 .lst-btn:hover{background:var(--green-soft);border-color:var(--green-soft);}
 
+/* ==========================================
+Weather Card
+========================================== */
+.weather-card{
+  position:relative;
+  width:340px;
+  border-radius:18px;
+  padding:28px 26px 22px;
+  color:var(--paper);
+  background:linear-gradient(160deg, var(--ochre), color-mix(in srgb, var(--ochre) 55%, #0d1420));
+  box-shadow:0 18px 40px -18px rgba(20,25,35,0.45);
+  overflow:hidden;
+  transition:background 0.6s ease;
+}
+
+.weather-card::before{
+  /* faint horizon glow, purely decorative, one deliberate touch */
+  content:"";
+  position:absolute;
+  right:-60px; top:-60px;
+  width:220px; height:220px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,0.16), transparent 70%);
+}
+
+.wc-top{
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+}
+
+.wc-place{
+  font-size:14px;
+  letter-spacing:0.01em;
+  color:rgba(246,245,241,0.85);
+}
+
+.wc-place .wc-updated{
+  display:block;
+  margin-top:2px;
+  font-size:12px;
+  color:rgba(246,245,241,0.55);
+}
+
+.wc-icon{ width:46px; height:46px; flex-shrink:0; }
+
+.wc-temp-row{
+  position:relative;
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+  margin-top:18px;
+}
+
+.wc-temp{
+  font-family:'Fraunces', Georgia, 'Times New Roman', serif;
+  font-size:64px;
+  line-height:1;
+  font-weight:500;
+  letter-spacing:-0.02em;
+}
+
+.wc-unit{
+  font-size:22px;
+  color:rgba(246,245,241,0.7);
+  cursor:pointer;
+  user-select:none;
+}
+
+.wc-condition{
+  margin-top:6px;
+  font-size:15px;
+  color:rgba(246,245,241,0.9);
+}
+
+.wc-hilo{
+  margin-top:2px;
+  font-size:13px;
+  color:rgba(246,245,241,0.6);
+}
+
+.wc-strip{
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  margin-top:22px;
+  padding-top:16px;
+  border-top:1px solid rgba(246,245,241,0.18);
+}
+
+.wc-hour{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  color:rgba(246,245,241,0.75);
+}
+
+.wc-hour svg{ width:20px; height:20px; }
+.wc-hour b{ color:var(--paper); font-weight:600; font-size:13px; }
+
+.wc-state{
+  color:var(--ink-soft);
+  background:var(--paper);
+  font-size:14px;
+  text-align:center;
+  padding:40px 20px;
+}
+.wc-state.error{ color:#a4432f; }
+
+.wc-retry{
+  margin-top:10px;
+  border:1px solid var(--line);
+  background:none;
+  color:var(--ink);
+  font-size:13px;
+  padding:6px 14px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
