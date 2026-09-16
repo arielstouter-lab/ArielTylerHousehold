@@ -5,9 +5,8 @@
 
 // ---- config -----------------------------------------------------
 // Fixed location — edit these three values to change the card's location.
-const LOCATION = { lat: 35.691544, lon: -105.944183, label: "Santa Fe, NM" };
+const LOCATION = window.WEATHER_LOCATION || { lat: 40.7128, lon: -74.0060, label: "Set location in config.js" };
 const STORAGE_KEY = "wc-unit"; // "c" or "f"
-
 // ---- WMO weather code -> { label, icon, accent } -----------------
 // Open-Meteo returns WMO codes: https://open-meteo.com/en/docs
 function codeInfo(code, isDay){
