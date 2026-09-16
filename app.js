@@ -9,11 +9,16 @@ window.supabaseClient = supabaseClient;
 document.addEventListener("DOMContentLoaded", async () => {
   const currentPage = window.location.pathname.split("/").pop() || "index.html";
 
-  const {
+  let {
     data: { session }
   } = await supabaseClient.auth.getSession();
 
-//Set public pages
+  // No existing session — see if this network is whitelisted
+  if (!session) {
+    session = await bootstrapAuth();
+  }
+
+  //Set public pages
   const PUBLIC_PAGES = ["index.html", ""];
 
   if (PUBLIC_PAGES.includes(currentPage)) {
@@ -25,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-// Every other page requires auth
+  // Every other page requires auth
   if (!session) {
     window.location.href = "index.html";
     return;
@@ -33,10 +38,24 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupApp(session);
 });
 
-
 /* -----------------------------
    Login
 ----------------------------- */
+
+async function bootstrapAuth() {
+  const { data: { session } } = await supabase.auth.getSession()
+  if (session) return session
+
+  const { data, error } = await supabase.functions.invoke('ip-login')
+  if (error || !data?.token_hash) return null
+
+  const { data: verified } = await supabase.auth.verifyOtp({
+    type: 'magiclink',
+    token_hash: data.token_hash,
+  })
+  return verified?.session ?? null
+}
+
 function setupLogin() {
   const form = document.getElementById("login-form");
   const usernameInput = document.getElementById("username");
