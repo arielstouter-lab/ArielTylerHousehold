@@ -1149,6 +1149,10 @@ Weather Card and page
   cursor:pointer;
 }
 
+.wc-meta-item svg {
+  width:18px;
+  height:18px;
+}
 .weather-page{
   max-width:520px;
   margin:0 auto;
