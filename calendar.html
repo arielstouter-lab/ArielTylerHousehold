@@ -6,122 +6,16 @@
 <script src="config.js"></script>
 <script src="app.js"></script>
 
-<style>
-    *{box-sizing:border-box;}
-    html, body {
-        margin: 0;
-        min-height: 100vh;
-        background-color: var(--line); /* Fallback color while images load */
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendar</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
 
-    body {
-        --season-img: none;
-        position: relative;
-        z-index: 0;
-    }
-
-    /* Image layer, faded via ::before so opacity (not background-image) does the animating */
-    body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background-image: var(--season-img);
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        opacity: 0;
-        transition: opacity 0.5s ease-in-out;
-        z-index: -1;
-        pointer-events: none;
-    }
-
-    body.img-loaded::before {
-        opacity: 1;
-    }
-
-    /* Season-specific colors (instant base tone) */
-    body[data-season="spring"] { background-color: var(--green-soft); }
-    body[data-season="summer"] { background-color: var(--ochre); }
-    body[data-season="fall"]   { background-color: var(--danger); }
-    body[data-season="winter"] { background-color: var(--ink); }
-
-    .cal-back {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        margin-bottom: 16px;
-        padding: 7px 12px;
-        border-radius: 8px;
-        color: var(--green);
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: 600;
-    }
-    .cal-back:hover { background: var(--card); }
-
-    .cal-grid-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:22px;}
-    @media (max-width:780px){.cal-grid-layout{grid-template-columns:1fr;}}
-
-    .cal-panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);}
-    .cal-panel-head{
-        display:flex;align-items:center;justify-content:space-between;
-        padding:14px 16px;border-bottom:1px solid var(--line);
-    }
-    .cal-panel-title{font-family:'Fraunces',serif;font-weight:600;font-size:18px;margin:0;}
-    .cal-nav{display:flex;align-items:center;gap:10px;}
-    .cal-nav-btn{
-        border:1px solid var(--line);background:var(--paper);color:var(--ink);
-        border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:14px;
-    }
-    .cal-nav-btn:hover{background:var(--line);}
-    .cal-month-label{font-weight:600;font-size:14px;min-width:120px;text-align:center;}
-
-    .cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);padding:10px 12px 0;gap:6px;}
-    .cal-weekday{text-align:center;font-size:11px;color:var(--ink-soft);font-weight:600;}
-
-    .cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:8px 12px 16px;}
-    .cal-day{
-        min-height:64px;border:1px solid var(--line);border-radius:8px;
-        background:var(--paper);padding:6px;cursor:pointer;display:flex;flex-direction:column;gap:4px;
-    }
-    .cal-day:hover{border-color:var(--green-soft);}
-    .cal-day.other-month{opacity:0.35;}
-    .cal-day.selected{border-color:var(--green);border-width:2px;background:var(--card);}
-    .cal-day.today .cal-day-num{color:var(--ochre);font-weight:700;}
-    .cal-day-num{font-size:12px;font-weight:600;color:var(--ink);}
-    .cal-day-dot-row{display:flex;flex-wrap:wrap;gap:3px;}
-    .cal-day-dot{width:6px;height:6px;border-radius:50%;background:var(--green-soft);}
-    .cal-day-count{font-size:10px;color:var(--ink-soft);}
-
-    .cal-selected-label{font-size:11.5px;color:var(--ink-soft);}
-    .cal-events{padding:6px 16px 6px;}
-    .cal-event{
-        display:flex;align-items:center;justify-content:space-between;gap:8px;
-        background:var(--paper);border:1px solid var(--line);border-radius:8px;
-        padding:8px 10px;margin-bottom:6px;font-size:13.5px;
-    }
-    .cal-event-del{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:14px;padding:2px;line-height:1;}
-    .cal-event-del:hover{color:var(--brick);}
-    .cal-empty{color:var(--ink-soft);font-size:12.5px;font-style:italic;padding:4px 0 12px;}
-
-    .cal-add-row{display:flex;gap:8px;padding:6px 16px 16px;}
-    .cal-add-row input{
-        flex:1;padding:7px 9px;border:1px solid var(--line);border-radius:9px;background:var(--paper);
-        font-family:'Inter',sans-serif;font-size:13.5px;color:var(--ink);
-    }
-    .cal-add-row input:focus{outline:none;border-color:var(--green);}
-    .cal-btn{
-        font-family:'Inter',sans-serif;font-weight:600;font-size:13px;
-        padding:8px 14px;border:1px solid var(--green);background:var(--green);
-        color:var(--paper);cursor:pointer;border-radius:9px;
-    }
-    .cal-btn:hover{background:var(--green-soft);border-color:var(--green-soft);}
-
-    .cal-status{font-size:11.5px;color:var(--ink-soft);margin-bottom:10px;min-height:14px;}
-</style>
-
-<body class="app-page">
+<body class="app-page cal-page">
 <div class="app-shell">
     <main class="main-content">
         <a href="app.html" class="cal-back">&larr; Back</a>
