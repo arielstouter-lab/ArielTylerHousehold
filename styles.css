@@ -742,6 +742,13 @@ input {
   .cal-weekday{text-align:center;font-size:11px;color:var(--ink-soft);font-weight:600;}
 
   .cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:8px 12px 16px;}
+  .cal-day{
+    min-height:64px;border:1px solid var(--line);border-radius:8px;
+    background:var(--paper);padding:6px;cursor:pointer;display:flex;flex-direction:column;gap:4px;
+  }
+  .cal-day:hover{border-color:var(--green-soft);}
+  .cal-day.other-month{opacity:0.35;}
+  .cal-day.selected{border-color:var(--green);border-width:2px;background:var(--card);}
   .cal-day.today .cal-day-num{color:var(--ochre);font-weight:700;}
   .cal-day-num{font-size:12px;font-weight:600;color:var(--ink);}
   .cal-day-dot-row{display:flex;flex-wrap:wrap;gap:3px;}
