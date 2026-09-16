@@ -147,12 +147,12 @@
                     .select('*')
                     .gte('event_date', first)
                     .lte('event_date', last)
-                    .order('created_at');
+                    .order('sort_order', { ascending: true });
                 if(error) throw error;
                 eventsByDate = {};
                 (data || []).forEach(ev => {
                     eventsByDate[ev.event_date] = eventsByDate[ev.event_date] || [];
-                    eventsByDate[ev.event_date].push({id: ev.id, title: ev.title});
+                    eventsByDate[ev.event_date].push({id: ev.id, title: ev.title, sort_order: ev.sort_order});
                 });
             } catch(e){
                 setStatus('Could not load events.');
@@ -220,8 +220,8 @@
 
             const evs = eventsByDate[selectedDate] || [];
             list.innerHTML = evs.length
-                ? evs.map(ev => `
-          <div class="cal-event" data-event-row="${ev.id}">
+                ? evs.map((ev, index) => `
+          <div class="cal-event" draggable="true" data-index="${index}" data-event-row="${ev.id}">
             <span>${escapeHtml(ev.title)}</span>
             <button class="cal-event-del" data-del-event="${ev.id}" title="Remove">✕</button>
           </div>`).join('')
@@ -259,19 +259,71 @@
             selectDate(cell.dataset.date);
         });
 
+        const eventsContainer = document.getElementById('cal-events');
+
+        eventsContainer.addEventListener('dragstart', (e) => {
+            const item = e.target.closest('.cal-event');
+            if (!item) return;
+            e.dataTransfer.setData('text/plain', item.dataset.index);
+        });
+
+        eventsContainer.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        eventsContainer.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            const fromIndex = Number(e.dataTransfer.getData('text/plain'));
+            const targetItem = e.target.closest('.cal-event');
+            if (!targetItem) return;
+            const toIndex = Number(targetItem.dataset.index);
+            if (isNaN(fromIndex) || isNaN(toIndex) || fromIndex === toIndex) return;
+
+            const list = eventsByDate[selectedDate];
+            if (!list || !list[fromIndex]) return;
+
+            const [moved] = list.splice(fromIndex, 1);
+            list.splice(toIndex, 0, moved);
+
+            list.forEach((ev, idx) => {
+                ev.sort_order = idx + 1;
+            });
+
+            renderEventsPanel();
+
+            try {
+                const updates = list.map((ev, idx) =>
+                    sb.from('household_events')
+                        .update({ sort_order: idx + 1 })
+                        .eq('id', ev.id)
+                );
+                const results = await Promise.all(updates);
+                const failed = results.find(r => r.error);
+                if (failed && failed.error) throw failed.error;
+            } catch (err) {
+                setStatus('Could not save event order.');
+            }
+        });
+
         document.getElementById('cal-add-event').addEventListener('click', async () => {
             if(!selectedDate){ setStatus('Select a day first.'); return; }
             const input = document.getElementById('cal-new-event');
             const title = input.value.trim();
             if(!title) return;
+
+            const currentEvents = eventsByDate[selectedDate] || [];
+            const sort_order = currentEvents.length > 0
+                ? Math.max(...currentEvents.map(ev => Number(ev.sort_order) || 0), currentEvents.length) + 1
+                : 1;
+
             try{
                 const {data, error} = await sb.from('household_events')
-                    .insert({event_date: selectedDate, title})
+                    .insert({event_date: selectedDate, title, sort_order})
                     .select()
                     .single();
                 if(error || !data){ setStatus('Could not add event.'); return; }
                 eventsByDate[selectedDate] = eventsByDate[selectedDate] || [];
-                eventsByDate[selectedDate].push({id: data.id, title: data.title});
+                eventsByDate[selectedDate].push({id: data.id, title: data.title, sort_order: data.sort_order});
                 input.value = '';
                 renderGrid();
                 renderEventsPanel();
