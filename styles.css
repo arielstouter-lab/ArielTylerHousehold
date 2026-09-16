@@ -1025,7 +1025,7 @@ Lists page
 .lst-btn:hover{background:var(--green-soft);border-color:var(--green-soft);}
 
 /* ==========================================
-Weather Card
+Weather Card and page
 ========================================== */
 .weather-card{
   position:relative;
@@ -1148,4 +1148,36 @@ Weather Card
   border-radius:8px;
   cursor:pointer;
 }
+
+.weather-page{
+  max-width:520px;
+  margin:0 auto;
+  padding:32px 20px 60px;
+}
+
+.wf-list{
+  margin-top:20px;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid var(--line, rgba(28,37,49,0.12));
+}
+
+.wf-row{
+  display:grid;
+  grid-template-columns: 56px 28px 1fr 24px auto;
+  align-items:center;
+  gap:12px;
+  padding:12px 16px;
+  font-size:14px;
+}
+.wf-row:not(:last-child){
+  border-bottom:1px solid var(--line, rgba(28,37,49,0.12));
+}
+
+.wf-day{ font-weight:600; }
+.wf-icon svg, .wf-moon svg{ width:20px; height:20px; }
+.wf-condition{ color:var(--ink-soft, #5b6472); }
+.wf-temps{ text-align:right; white-space:nowrap; }
+.wf-lo{ color:var(--ink-soft, #5b6472); margin-left:6px; }
+
 
