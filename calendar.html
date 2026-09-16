@@ -222,7 +222,8 @@
             list.innerHTML = evs.length
                 ? evs.map((ev, index) => `
           <div class="cal-event" draggable="true" data-index="${index}" data-event-row="${ev.id}">
-            <span>${escapeHtml(ev.title)}</span>
+            <span class="cal-event-handle" title="Drag to reorder">⋮⋮</span>
+            <span class="cal-event-title">${escapeHtml(ev.title)}</span>
             <button class="cal-event-del" data-del-event="${ev.id}" title="Remove">✕</button>
           </div>`).join('')
                 : '<p class="cal-empty">No events yet.</p>';
@@ -341,7 +342,9 @@
 
         eventsContainer.addEventListener('touchstart', (e) => {
             if (e.target.closest('.cal-event-del')) return;
-            const item = e.target.closest('.cal-event');
+            const handle = e.target.closest('.cal-event-handle');
+            if (!handle) return;
+            const item = handle.closest('.cal-event');
             if (!item) return;
 
             touchDragItem = item;
