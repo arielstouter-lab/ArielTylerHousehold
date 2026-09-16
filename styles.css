@@ -627,8 +627,8 @@ input {
 
   /* --- Nav items --- */
   .sidebar-nav {
-    flex: 1 1 auto;      /* takes remaining vertical space */
-    overflow-y: auto;    /* scrolls internally if too many items */
+    flex: 1 1 auto; /* takes remaining vertical space */
+    overflow-y: auto; /* scrolls internally if too many items */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -652,7 +652,7 @@ input {
 
   /* --- Bottom section (user card + logout) --- */
   .sidebar-bottom {
-    flex-shrink: 0;   /* never gets squeezed or pushed off-screen */
+    flex-shrink: 0; /* never gets squeezed or pushed off-screen */
     margin-top: auto;
     width: 100%;
   }
@@ -698,6 +698,7 @@ input {
   .auth-card {
     padding: 28px 22px;
   }
+}
 
   /* ==========================================
    Calendar page styles
@@ -803,4 +804,3 @@ input {
   body.cal-page[data-season="summer"] { background-color: var(--ochre); }
   body.cal-page[data-season="fall"]   { background-color: var(--danger); }
   body.cal-page[data-season="winter"] { background-color: var(--ink); }
-}
