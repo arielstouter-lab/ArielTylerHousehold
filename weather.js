@@ -153,9 +153,6 @@ function renderWeatherCard(raw, place){
 
     root.style.setProperty("--accent", info.accent);
     root.innerHTML = `
-    <div class="wc-top">
-    </div>
-
     <div class="wc-temp-row">
       <div class="wc-temp">${fmtTemp(current.temperature_2m, wcUnit)}°</div>
       <div class="wc-unit" id="wcUnitToggle" title="Toggle °C/°F">${wcUnit === "f" ? "F" : "C"}</div>
@@ -183,13 +180,6 @@ function renderWeatherCard(raw, place){
      <span class="wc-updated">Updated ${new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})}</span>
     </div>
   `;
-
- /*   <div class="wc-place">
-        ${place}
-        <span class="wc-updated">Updated ${new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})}</span>
-      </div>
-      <div class="wc-icon">${weatherIcon(info.icon)}</div> */
-
 
     document.getElementById("wcUnitToggle").addEventListener("click", () => {
         wcUnit = wcUnit === "f" ? "c" : "f";
