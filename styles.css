@@ -1190,7 +1190,8 @@ Weather Card and page
 }
 
 .wf-day{ font-weight:600; }
-.wf-icon svg, .wf-moon svg{ width:20px; height:20px; }
+.wf-icon svg,
+.wf-moon svg{ width:20px; height:20px; }
 .wf-condition{ color:var(--card, #5b6472); }
 .wf-temps{ text-align:right; white-space:nowrap; }
 .wf-lo{ color:var(--card, #5b6472); margin-left:6px; }
