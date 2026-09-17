@@ -1156,7 +1156,6 @@ Weather Card and page
   font-size: 13px;
   color: rgba(246, 245, 241, 0.85);
 }
-
 .wc-meta-item {
   display: flex;
   align-items: center;
@@ -1168,6 +1167,7 @@ Weather Card and page
   height: 18px;
   flex-shrink: 0;
 }
+
 .weather-page{
   max-width:520px;
   margin:0 auto;
@@ -1196,8 +1196,8 @@ Weather Card and page
 
 .wf-day{ font-weight:600; }
 .wf-icon svg, .wf-moon svg{ width:20px; height:20px; }
-.wf-condition{ color:var(--ink-soft, #5b6472); }
+.wf-condition{ color:var(--card, #5b6472); }
 .wf-temps{ text-align:right; white-space:nowrap; }
-.wf-lo{ color:var(--ink-soft, #5b6472); margin-left:6px; }
+.wf-lo{ color:var(--card, #5b6472); margin-left:6px; }
 
 
