@@ -1150,7 +1150,7 @@ Weather Card and page
 }
 .wc-meta {
   display: flex;
-  align-items: center;
+  align-items: right;
   gap: 16px;
   margin-top: 12px;
   font-size: 13px;
