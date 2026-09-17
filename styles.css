@@ -1067,8 +1067,8 @@ Weather Card and page
 .wc-place .wc-updated{
   display:block;
   margin-top:2px;
-  font-size:12px;
-  color:rgba(246,245,241,0.55);
+  font-size:10px;
+  color:var(--green-soft);
 }
 
 .wc-icon{ width:46px; height:46px; flex-shrink:0; }
@@ -1178,6 +1178,7 @@ Weather Card and page
   margin-top:20px;
   border-radius:14px;
   overflow:hidden;
+  color:var(--line);
   background:linear-gradient(160deg, var(--accent), color-mix(in srgb, var(--accent) 55%, #0d1420));
   border:1px solid var(--line, rgba(28,37,49,0.12));
 }
