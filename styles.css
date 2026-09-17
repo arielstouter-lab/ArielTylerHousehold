@@ -1058,17 +1058,11 @@ Weather Card and page
   align-items:flex-start;
 }
 
-.wc-place{
-  font-size:14px;
-  letter-spacing:0.01em;
-  color:rgba(246,245,241,0.85);
-}
-
-.wc-place .wc-updated{
+.wc-updated{
   display:block;
   margin-top:2px;
   font-size:10px;
-  color:var(--green-soft);
+  color:var(--sidebar-text);
 }
 
 .wc-icon{ width:46px; height:46px; flex-shrink:0; }
