@@ -178,13 +178,14 @@ function renderWeatherCard(raw, place){
         </div>`;
     }).join("")}
     </div>
+  `;
 
-          <div class="wc-place">
+ /*   <div class="wc-place">
         ${place}
         <span class="wc-updated">Updated ${new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})}</span>
       </div>
-      <div class="wc-icon">${weatherIcon(info.icon)}</div>
-  `;
+      <div class="wc-icon">${weatherIcon(info.icon)}</div> */
+
 
     document.getElementById("wcUnitToggle").addEventListener("click", () => {
         wcUnit = wcUnit === "f" ? "c" : "f";
