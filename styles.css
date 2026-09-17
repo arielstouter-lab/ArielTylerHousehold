@@ -1062,7 +1062,8 @@ Weather Card and page
   display:block;
   margin-top:2px;
   font-size:10px;
-  color:var(--sidebar-text);
+  color:rgba(246,245,241,0.7);
+  text-align: right;
 }
 
 .wc-icon{ width:46px; height:46px; flex-shrink:0; }
