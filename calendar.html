@@ -16,7 +16,7 @@
 <div class="app-shell">
     <main class="main-content">
         <a href="app.html" class="nav-item active">
-            <div class="wf-moon"></div>
+            <div class="wc-meta-item">${moonPhaseIcon(moonPhase)}<span>${moonPhaseName(moonPhase)}</span></div>
         </a>
 
         <header class="topbar">
@@ -66,6 +66,9 @@
 
 <script>
     (function(){
+
+        const moonPhase = getMoonPhase(new Date());
+        
         const sb = window.supabaseClient;
         let viewYear, viewMonth; // 0-indexed month
         let selectedDate; // 'YYYY-MM-DD'
