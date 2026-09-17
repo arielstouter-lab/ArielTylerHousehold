@@ -178,6 +178,10 @@ function renderWeatherCard(raw, place){
         </div>`;
     }).join("")}
     </div>
+
+    <div class="wc-strip">
+     <span class="wc-updated">Updated ${new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})}</span>
+    </div>
   `;
 
  /*   <div class="wc-place">
